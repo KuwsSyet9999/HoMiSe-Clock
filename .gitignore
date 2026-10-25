@@ -1,0 +1,56 @@
+# Build outputs (pure ASCII on purpose: Windows PowerShell 5.1 mangles non-ASCII here)
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+.kotlin/
+
+# Local tool chain (large, not committed)
+tools/jdk-17/
+tools/gradle-8.9/
+tools/gradle-home/
+tools/android-home/
+tools/home/
+tools/temp/
+tools/avd/
+tools/android-sdk/
+tools/tmp/
+tools/_jdk17_setup/
+tools/_gradle_setup/
+tools/_sdk_setup/
+tools/_emu_setup/
+tools/_emu_probe/
+tools/_probe/
+
+# Signing keys: never commit private keys
+keystore/
+*.jks
+*.keystore
+
+# IDE
+.idea/
+*.iml
+*.hprof
+
+# Python helper scripts (font-source/tools)
+__pycache__/
+*.pyc
+
+# Repository scope: font sources, the standalone font repo and packaged APKs
+# are published elsewhere; keep the app repository small.
+font-source/
+repo/
+release/
+
+# Design sources and one-off backups in the repository root
+*.zip
+*.ai
+*.svg
+all_DSEG_list.png
+*.bak
+*.bak-*
+version.json.broken-*
+Microsoft/

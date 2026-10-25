@@ -1,0 +1,673 @@
+{
+  "project": "HoMiSe",
+  "description": "安卓时钟软件",
+  "versioningFile": "VERSIONING.md",
+  "governingRule": "主.子.末.迭代序号；内部迭代只加迭代序号，正式版本导出时才由需求方确认主/子/末三位",
+  "current": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0,
+    "iteration": 0
+  },
+  "stage": "release",
+  "releaseVersion": "1.0.0",
+  "lastRelease": "1.0.0",
+  "internalVersion": "1.0.0.0",
+  "nextRelease": {
+    "plannedVersion": null,
+    "bump": "minor",
+    "basis": "正式版发布后重新判定；下一次导出前由需求方确认",
+    "confirmedBy": null,
+    "note": "正式导出须先由需求方确认版本号，再运行 promote"
+  },
+  "history": [
+    {
+      "internalVersion": "0.0.0.0",
+      "date": "2026-02-14",
+      "summary": "项目初始化：确立版本号规则，并完成开发机网络环境评估"
+    },
+    {
+      "internalVersion": "0.0.0.1",
+      "date": "2026-10-16",
+      "summary": "搭建 Android 工程骨架：JDK 17 + Gradle 8.9 + Android SDK 35；确立「工具链缓存必须放在纯 ASCII 路径」的约定"
+    },
+    {
+      "internalVersion": "0.0.0.2",
+      "date": "2026-10-16",
+      "summary": "首次构建通过配置阶段；修正 versionCode 恒为正数、版本号从 version.json 正确解析"
+    },
+    {
+      "internalVersion": "0.0.0.3",
+      "date": "2026-10-16",
+      "summary": "首次构建成功并产出 APK（9.4 MB，51 个 DSEG 字体已打包）；修正资源命名、临时目录、Kotlin 守护进程、分段下载四项工具链问题"
+    },
+    {
+      "internalVersion": "0.0.0.4",
+      "date": "2026-10-16",
+      "summary": "实现数码管时钟主界面：DSEG7 大号时分显示、冒号每秒闪烁、秒与 AM/PM 副体、日期行、字号自适应、屏幕常亮"
+    },
+    {
+      "internalVersion": "0.0.0.5",
+      "date": "2026-10-16",
+      "summary": "安装模拟器与 android-35 系统镜像，实机运行验证界面；优化字号与冒号辨识度"
+    },
+    {
+      "internalVersion": "0.0.0.6",
+      "date": "2026-10-16",
+      "summary": "定义正式版本导出文件名格式（HoMiSe_版本号_14位时间_哈希.APK），实现 tools/export-apk.ps1 及版本一致性校验与确认门禁"
+    },
+    {
+      "internalVersion": "0.1.0.0",
+      "date": "2026-10-16",
+      "summary": "定格首个正式版本 0.1.0：release 变体（R8 + 资源压缩）实机验证通过，配置签名并导出"
+    },
+    {
+      "internalVersion": "0.1.0.1",
+      "date": "2026-10-16",
+      "summary": "修正 version.ps1 两处记录缺陷：数组条目未追加、顶层字段替换误改 history 内各条版本号"
+    },
+    {
+      "internalVersion": "0.1.0.2",
+      "date": "2026-10-16",
+      "summary": "确认 version.ps1 数组记录与顶层字段替换均已修复（含 0.1.0 首版导出归档）"
+    },
+    {
+      "internalVersion": "0.1.0.3",
+      "date": "2026-10-16",
+      "summary": "验证 version.ps1 三处修复：数组追加、顶层版本号锚定替换、releaseVersion 不再被内部迭代清空"
+    },
+    {
+      "internalVersion": "0.1.0.4",
+      "date": "2026-10-16",
+      "summary": "固化 version.ps1 修复并统一 version.json 字段顺序，补齐字段级校验"
+    },
+    {
+      "internalVersion": "0.1.0.5",
+      "date": "2026-10-16",
+      "summary": "界面改版：纯黑底白字；横屏时:分:秒一行、竖屏时分秒各一行；字号自适应且四周留白等于一个数码管宽度；移除日期显示"
+    },
+    {
+      "internalVersion": "0.1.0.6",
+      "date": "2026-10-16",
+      "summary": "修复横屏秒数被裁切（宽度约束与留白公式不统一）；冒号闪烁改为 1 秒周期；导出脚本新增内部迭代包模式，并修复脚本中文注释致解析失败、参数名大小写冲突"
+    },
+    {
+      "internalVersion": "0.1.0.7",
+      "date": "2026-10-16",
+      "summary": "右下角新增灰色版本号显示（覆盖层实现，不参与时钟字号自适应）"
+    },
+    {
+      "internalVersion": "0.1.0.8",
+      "date": "2026-10-16",
+      "summary": "修复横屏秒数仍被裁切（字号加 3% 安全余量）；右下角版本号改为四位显示（debug 注入迭代号）"
+    },
+    {
+      "internalVersion": "0.1.0.9",
+      "date": "2026-10-16",
+      "summary": "修复横屏秒数被裁切的真正根因：宽度公式漏算冒号与组间距、高度公式漏算上下留白；右下角版本号改为四位"
+    },
+    {
+      "internalVersion": "0.1.0.10",
+      "date": "2026-10-16",
+      "summary": "用字体真实度量修正字符宽度比（0.62→0.816）与冒号宽度（0.2），根治横屏内容超屏导致秒数重叠"
+    },
+    {
+      "internalVersion": "0.1.0.11",
+      "date": "2026-10-16",
+      "summary": "四周边距与竖屏行间距统一改为一个冒号宽度（0.2×字号），腾出空间使数字更大"
+    },
+    {
+      "internalVersion": "0.1.0.12",
+      "date": "2026-10-16",
+      "summary": "边距与行间距统一为一个冒号宽度（已确认）；修复字号受系统字体缩放影响导致与 dp 边距比例失衡的问题"
+    },
+    {
+      "internalVersion": "0.1.0.13",
+      "date": "2026-10-16",
+      "summary": "新增屏幕参数自报告（调试包显示 dp/px、density、fontScale、字号），用于核对自适应结果"
+    },
+    {
+      "internalVersion": "0.1.0.14",
+      "date": "2026-10-16",
+      "summary": "修正诊断信息的取值作用域"
+    },
+    {
+      "internalVersion": "0.1.0.15",
+      "date": "2026-10-16",
+      "summary": "边距与行间距改用冒号笔迹宽度（字体轮廓实测 0.124em）；行高比按实测 1.0em 修正为 1.20，数字变大"
+    },
+    {
+      "internalVersion": "0.1.0.16",
+      "date": "2026-10-16",
+      "summary": "边距与组间距改用冒号笔迹宽基准（横屏左右/竖屏上下各一个冒号决定字号）；行高按实测 1.0em；竖屏行间距与行内间距视觉一致；新增灰色冒号基准线（仅调试显示）"
+    },
+    {
+      "internalVersion": "0.1.0.17",
+      "date": "2026-10-16",
+      "summary": "改用笔迹宽度模型：横屏由左右冒号留白、竖屏由上下冒号留白决定字号，可见内容加留白恰好填满屏幕；竖屏行间可见间隙与行内数字间距一致"
+    },
+    {
+      "internalVersion": "0.1.0.18",
+      "date": "2026-10-16",
+      "summary": "移除灰色冒号基准标记（其变形且压在数字上，无参考价值）；行高比按实测改为 1.2 修复竖屏三行重叠；横屏改按 advance 口径计算并包含可见留白，修复右侧溢出"
+    },
+    {
+      "internalVersion": "0.1.0.19",
+      "date": "2026-10-16",
+      "summary": "修复横屏秒数堆叠：取消导致 Row 挤压的负组间距（COLON_GAP_RATIO 归零）并加横向安全系数；灰色基准标记改为不干扰读数的细条（仅调试包）"
+    },
+    {
+      "internalVersion": "0.1.0.20",
+      "date": "2026-10-16",
+      "summary": "诊断版：在界面显示 margin 的 dp/px/em 与 lineGap，用于核对竖屏留白是否真按一个冒号宽算出"
+    },
+    {
+      "internalVersion": "0.1.0.21",
+      "date": "2026-10-16",
+      "summary": "留白口径修正为「屏幕边到数字可见笔迹 = 一个冒号笔迹宽」（padding 扣掉字形自带的内空白），使横竖屏可见留白一致"
+    },
+    {
+      "internalVersion": "0.1.0.22",
+      "date": "2026-10-16",
+      "summary": "调试标记改为四条灰线组成井字，精确标出可见留白边界；诊断增加线段位置与字号笔迹信息（digitAdv/digitInk/colonInk/lineH）"
+    },
+    {
+      "internalVersion": "0.1.0.23",
+      "date": "2026-10-16",
+      "summary": "修复竖屏实际边距被撑大：字号计算不再重复计入行间距（行距已含在 1.2em 行框内），并去掉字号安全余量使内容恰好填满；改为真正全屏（移除 Scaffold 的 WindowInsets 限制）"
+    },
+    {
+      "internalVersion": "0.1.0.24",
+      "date": "2026-10-16",
+      "summary": "改用运行时实测排版比例（TextMeasurer）替代字体表推算：字体 hmtx advance 与 Android 实际渲染宽度不一致，导致横屏内容超宽、秒的两位被压在同一位置；诊断行新增 measL/measP/theoryL 便于对比"
+    },
+    {
+      "internalVersion": "0.1.0.25",
+      "date": "2026-10-16",
+      "summary": "修复横屏秒数上下叠放：根因是 Text 换行（组件宽度之和略大于整串测量值，零余量时最后一个 Text 约束不足）；改为按实际组件（3 组数字 + 2 冒号）分别测量累加、留 0.5% 余量，并禁止所有时钟 Text 换行"
+    },
+    {
+      "internalVersion": "0.1.0.26",
+      "date": "2026-10-16",
+      "summary": "修复竖屏越界：实测行高漏算 lineHeight（测出 1.0em、实际占 1.2em），导致竖屏按偏小的行高算出过大字号；测量 TextStyle 与 DigitText 对齐，并给横竖屏加双向取小约束防止任一方向越界"
+    },
+    {
+      "internalVersion": "0.1.0.27",
+      "date": "2026-10-16",
+      "summary": "竖屏越界根治：行高不再依赖 Compose lineHeight，改用固定高度行框（= LINE_HEIGHT_RATIO×字号）承载每行，三行总高与字号计算严格对齐；TextMeasurer 测不到 lineHeight 扩展量，故行框高度直接采用设定值"
+    },
+    {
+      "internalVersion": "0.1.0.28",
+      "date": "2026-10-16",
+      "summary": "新增熄灭段表示：在同位置以相同参数置底绘制一层灰色全 8（横屏 88:88:88、竖屏三行 88），上层白色实际时间，未点亮的段透出灰色；两层由 Box 叠放、共用同一 Row/Column 实现以保证逐段严格对齐"
+    },
+    {
+      "internalVersion": "0.1.0.29",
+      "date": "2026-10-16",
+      "summary": "按方案 B 实现挖孔避让：将挖孔安全区作为可用空间反推字号，内容在安全区内仍保持「一个冒号笔迹宽」留白；safeInset 随方向自动换边（竖屏 top、横屏 left/right）；并在 MainActivity 设置 LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES 以允许绘制到挖孔区"
+    },
+    {
+      "internalVersion": "0.1.0.30",
+      "date": "2026-10-16",
+      "summary": "新增沉浸式全屏：隐藏状态栏与导航栏（BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE 允许边缘滑动临时唤出），并在获得焦点时重新隐藏；挖孔避让不受影响（物理遮挡单独由 displayCutout 处理）"
+    },
+    {
+      "internalVersion": "0.2.0.1",
+      "date": "2026-10-16",
+      "summary": "新增自适应应用图标（黑底 + DSEG7 三行时间 16/09:25:38/47，统一字号，横排两侧各留一个冒号笔迹宽的可见留白，并保留灰色全8熄灭段底数）；中文应用名设为「时分秒」，其他语言为 HoMiSe"
+    },
+    {
+      "internalVersion": "0.2.0.2",
+      "date": "2026-10-16",
+      "summary": "应用图标数字改为 09/16:25:38/47（字号 54px、行距、对齐与灰色熄灭段底数均保持不变，仅替换数字）"
+    },
+    {
+      "internalVersion": "0.2.0.3",
+      "date": "2026-10-16",
+      "summary": "图标以灰色底数（满格对称字形）为基准校准上下左右居中：灰底墨迹中心与画布中心重合（水平/垂直均为 216.0），水平留白 7/7px 等于一个冒号笔迹宽；同时将安全区口径由可见区 72dp 修正为官方安全区 66dp，避免圆形遮罩裁切两端"
+    },
+    {
+      "internalVersion": "0.2.0.4",
+      "date": "2026-10-16",
+      "summary": "新增默认最大亮度（screenBrightness 只覆盖本窗口，不改系统设置、不需权限，退出即恢复）与阻止息屏（FLAG_KEEP_SCREEN_ON 随窗口生命周期生效）；窗口设置集中到 applyWindowSettings；顺带移除不再需要的 WAKE_LOCK 权限，应用现为零权限"
+    },
+    {
+      "internalVersion": "0.2.0.5",
+      "date": "2026-10-16",
+      "summary": "新增两项手势功能：双击互换背景色与数字色（黑底白字 ⇄ 白底黑字）、长按切换最大亮度（取消/恢复）；两者均用 SharedPreferences 持久化，重启保持；新增 ClockColors 配色方案，白底模式下熄灭段/调试井字线/标签灰同步反相，避免浅底上看不见灰字；窗口亮度改由偏好动态控制（BRIGHTNESS_OVERRIDE_NONE 表示跟随系统）"
+    },
+    {
+      "internalVersion": "0.2.0.6",
+      "date": "2026-10-16",
+      "summary": "挖孔避让改为需求方确认的规则：数字可见笔迹距屏幕边缘为一个冒号笔迹宽、距挖孔边缘为半个冒号笔迹宽，合成 padding = max(0, 挖孔 − 半个冒号宽)；挖孔不超过半个冒号宽时该方向仍按一个冒号宽边距处理（整宽边距已覆盖）；padding 与字号互相依赖，改用 3 轮迭代收敛；诊断行新增 pad 显示"
+    },
+    {
+      "internalVersion": "0.2.0.7",
+      "date": "2026-10-16",
+      "summary": "亮度调整改为不做继承：每次启动固定恢复默认最大亮度，长按切换只在本次运行期间有效，不再写入 SharedPreferences（移除 maxBrightness 偏好项）；配色的持久化保持不变"
+    },
+    {
+      "internalVersion": "0.2.0.8",
+      "date": "2026-10-16",
+      "summary": "新增滑屏切换字体：自右向左循环切换 DSEG 字体族（7 Classic/7 Classic Mini/7 Modern/7 Modern Mini/14 Classic/14 Classic Mini/14 Modern/14 Modern Mini），自下向上循环切换样式（Light/Light Italic/Regular/Italic/Bold/Bold Italic），48 个组合全部内置并逐一静态映射；选择以枚举名持久化记忆；字号度量改为按当前字体重测；字体经 CompositionLocal 注入以保证数字与熄灭段同步"
+    },
+    {
+      "internalVersion": "0.2.0.9",
+      "date": "2026-10-16",
+      "summary": "灰色熄灭段底数按字体族的全亮字形自动切换：DSEG7 系列用 8（88 / 88:88:88），DSEG14 系列用 ~（~~ / ~~:~~:~~）—— 14 段中 8 只点亮 8 段并非全亮，用 ~ 才能覆盖全部十四段；DsegFamily 新增 ghostDigit 属性并在横竖屏两处底数统一取用"
+    },
+    {
+      "internalVersion": "0.2.0.10",
+      "date": "2026-10-16",
+      "summary": "新增反方向滑动切换：自左向右滑反向循环字体族、自上向下滑反向循环样式；DsegFamily/DsegStyle 各新增 previous() 反向循环函数；手势按「主轴 + 位移符号」判定四个方向，两个方向均持久化记忆"
+    },
+    {
+      "internalVersion": "0.2.0.11",
+      "date": "2026-10-17",
+      "summary": "新增图标随选择自动切换：为全部 96 个「字体族 × 样式 × 配色」组合生成独立自适应图标（480 张前景图），manifest 声明 96 个 activity-alias，并由 ClockIconVariants 在字体/配色变化时启用对应别名、禁用其余；图标内字号按各族字体的墨迹与冒号宽实测，14 段用 ~ 作全亮底数"
+    },
+    {
+      "internalVersion": "0.2.0.12",
+      "date": "2026-10-17",
+      "summary": "修复启动闪退：图标别名的组件名误用运行时 packageName 拼接，而清单里的 .icon.IconV* 是按源码 namespace 解析的（debug 变体带 .debug 后缀，两者不一致），导致组件不存在、setComponentEnabledSetting 抛 IllegalArgumentException；改用 NAMESPACE 常量拼接，并加 try/catch 兜底、调整为先启用目标再禁用其余"
+    },
+    {
+      "internalVersion": "0.2.0.13",
+      "date": "2026-10-17",
+      "summary": "新增图标切换诊断：诊断行显示 want（按字体/配色算出的目标变体）与 active（回读的实际生效变体），用于区分「组件启用未生效」与「启动器缓存未刷新」"
+    },
+    {
+      "internalVersion": "0.2.0.14",
+      "date": "2026-10-17",
+      "summary": "体积优化：图标前景图改用无损 WebP（实测为 PNG 的 36%）并仅保留 xxhdpi/xxxhdpi 两档密度（minSdk 26 下更低密度不会被选用），480 张 PNG 4.23MB 降至 192 张 WebP 1.01MB；图标切换诊断扩展为 want/before/after/active 四个状态码以定位启用失败原因"
+    },
+    {
+      "internalVersion": "0.2.0.15",
+      "date": "2026-10-17",
+      "summary": "修复图标始终不切换：别名在清单中按源码 namespace 解析成 com.homise.clock.icon.*，而 PackageManager 要求组件包前缀必须等于应用包名（debug 变体为 com.homise.clock.debug），前缀不符即抛 IllegalArgumentException（诊断表现为 before=-1 after=-1）；改为用 ${applicationId} 生成别名名并用 packageName 构造组件名，合并后 manifest 已验证为 com.homise.clock.debug.icon.IconV*"
+    },
+    {
+      "internalVersion": "0.2.0.16",
+      "date": "2026-10-17",
+      "summary": "修复切换图标时的闪退：原因是用户操作当下即禁用「正承载当前任务的 launcher 别名」，系统因此结束该任务；改为前台只登记目标变体、在 onStop（退到后台）时再执行启用与禁用，用户看不到过程，回到桌面图标已更新；诊断改为只读 report，不再由前台触发切换"
+    },
+    {
+      "internalVersion": "0.2.0.17",
+      "date": "2026-10-17",
+      "summary": "新增横屏过渡提示：时间上方淡入显示「日期T时间+时区」（ISO 8601，含当前时区偏移），下方显示当前字体全名（如 DSEG7 SERIES Modern Mini Bold Italic）；均用当前字体、灰色、左右居中，淡入 400ms → 停留 3 秒 → 淡出 600ms；每次切换字体/样式/配色重新播放；仅在横屏显示（竖屏三行已占满上下空间）；用 alpha 而非 AnimatedVisibility 以避免出现时挤动时钟"
+    },
+    {
+      "internalVersion": "0.2.0.18",
+      "date": "2026-10-17",
+      "summary": "调整横屏过渡提示：两行灰字改为以时钟行中心为基准上下偏移（紧邻时钟，不再贴屏幕边缘）；上方 ISO 时间按固定长度（25 字符）顶到左右边距定格字号；下方字体名按可能出现的最长样本「DSEG14 SERIES Modern Mini Light Italic」定格通用字号，保证任何字体名都不超宽且切换时字号不跳变；字号一律用 TextMeasurer 实测比例反推，不假设等宽"
+    },
+    {
+      "internalVersion": "0.2.0.19",
+      "date": "2026-10-17",
+      "summary": "修正过渡提示的正偏移号规则：仅七段字体把 + 换成 U（该族无 + 字形会回退系统字体），十四段保留 +（本身有该字形）；两个等长样本分别定格字号；时钟串每整秒刷新并与字体解耦（切字体时立即换用新字形）；两行文字加宽度硬约束避免字体回退时顶出边距"
+    },
+    {
+      "internalVersion": "0.2.0.20",
+      "date": "2026-10-17",
+      "summary": "过渡提示与诊断排版修正：① ISO 字号加 3% 安全余量（实测与最终渲染存在偏差，纯按比例反推会顶出边距）；② 字体名下方新增一行同字号版本号并居右，随提示一同淡入淡出；③ 诊断区整体移入 showDiagnostics，正式包不再导出任何诊断字符（含版本号），合并为三行、字号压至 9sp 并贴屏幕最下缘，避免与时钟及过渡提示重叠"
+    },
+    {
+      "internalVersion": "0.2.0.21",
+      "date": "2026-10-17",
+      "summary": "过渡提示超出边距的真正修正：TextMeasurer 的测量宽度与最终排版宽度存在偏差（此前 3% 安全余量不足），改为渲染后用 onTextLayout 回读实际宽度并按比例修正一次，偏差小于 1% 即停止以避免往复重排；同时新增单击画面重播过渡提示（ISO 时间/字体名/版本号），保留淡入 400ms、停留 3 秒、淡出 600ms"
+    },
+    {
+      "internalVersion": "0.2.0.22",
+      "date": "2026-10-17",
+      "summary": "越界修复续：TextLayoutResult 无 getLineWidth，改用 getLineRight(0)-getLineLeft(0) 取该行真实宽度（result.size.width 受外层 .width() 约束钳制而恒等于约束宽度，导致宽度校正从未触发）；单击阶段语义：停留期内延长、淡入淡出期间忽略、结束后重播"
+    },
+    {
+      "internalVersion": "0.2.0.23",
+      "date": "2026-10-17",
+      "summary": "过渡提示越界与抽搐的根治：① 越界——该行原先加了 .width() 约束，实测宽度被钳制在约束值上，无论用 result.size.width 还是 getLineRight-Left 都测不到真实宽度；现移除宽度约束，改为按实测行宽等比迭代字号，一两轮即收敛到顶死边距。② 抽搐——原修正公式拿初始估算字号乘比例，而渲染值来自修正后的字号，每轮基准错误导致字号来回震荡；改为基于当前字号迭代。③ 首帧系数降至 0.90，避免估算偏小时第一帧就溢出。版本号行保留约束（居右需要，内容短不会溢出）"
+    },
+    {
+      "internalVersion": "0.2.0.24",
+      "date": "2026-10-17",
+      "summary": "解除父容器约束后才能真正测量：Box 会给子元素 maxWidth=屏宽 的约束，超宽文字被钳在屏宽，onTextLayout 实测值随之恒等于屏宽，迭代校正把「仍被钳制」误判成「已达标」而只缩小约5%即停止（表现为全部越界）；改用 wrapContentWidth(unbounded=true) 解除约束，使实测值反映真实宽度，迭代得以收敛到顶死边距"
+    },
+    {
+      "internalVersion": "0.2.0.25",
+      "date": "2026-10-17",
+      "summary": "越界真正根因：过渡提示的边距误传了 layout.marginDp（字形骨架与笔迹之间的内空白，本例 3.0dp）而非 layout.visibleMarginDp（屏幕边到笔迹的可见留白，= 一个冒号笔迹宽，14.8dp），导致目标宽度算成 640-6=634dp 而非 640-29.6=610.4dp，每边多出约 11.8dp；校正逻辑本身正常，只是收敛到了错误目标。改用可见留白并重命名参数为 visibleMargin 以免再混淆"
+    },
+    {
+      "internalVersion": "0.2.0.26",
+      "date": "2026-10-17",
+      "summary": "切换字体时字体名不再跳变：新增独立的交叉淡化层，旧名与整体 alpha 相乘后淡出、新名同步淡入（各 400ms），两层叠放在同一位置；交叉淡化与整体 3 秒淡入淡出相乘故互不干扰；因字体已切换，两层均以当前字体渲染"
+    },
+    {
+      "internalVersion": "0.2.0.27",
+      "date": "2026-10-17",
+      "summary": "字体名交叉淡化的对齐与字号修正：① 两层名字改用同一个固定宽度容器承载，由容器负责定位居中（内部 unbounded 仅用于解除约束以测真实宽度），此前两层各自 unbounded 居中、宽度不同导致左边界不一致，表现为「先出现在右边再居中」；② 字体名与版本号的字号改由理论最长字体名（DSEG14 SERIES Modern Mini Light Italic）一次定格后固定不变，移除按当前名称的迭代校正——否则短名字也会被放大到顶满边距，切换字体时字号忽大忽小；③ ISO 时间行保留迭代校正（长度固定，可准确顶满）"
+    },
+    {
+      "internalVersion": "0.3.0.1",
+      "date": "2026-10-19",
+      "summary": "平板竖屏下方越界排查：新增系统栏/安全区诊断（navigationBars、systemBars、safeDrawing 的底部与左右值）——平板常驻任务栏不属于 displayCutout，若其值非零而 pad 未覆盖即为越界根因；新增内容实际边界诊断（onGloballyPositioned 实测字形内容在可用区内的上下边界、内容高、越界量 over）与行框/字形行高对比（实测 Text 布局高 glyph 及三行合计）；辅助线增加红色两条标注内容真实上下边界，与灰色留白边界线对照可直观看出越界程度"
+    },
+    {
+      "internalVersion": "0.3.0.2",
+      "date": "2026-10-19",
+      "summary": "修复平板竖屏下方越界：竖屏固定行框的高度误用了渲染用 sp 数值（该值已除以 fontScale 以抵消系统字体缩放），导致行框被放大 1/fontScale 倍——实测平板 fontScale=0.85 时行框由应有的 327.6dp 膨胀到 385.4dp，三行合计 1156dp 远超可用 1003dp，第三行被屏幕下沿裁切；改为按物理 dp 基准 layout.fontSizeSp 计算行框（字形物理高恒等于该值），fontScale>1 时也会同样修正行间重叠；诊断增加 lineBox 与 need3（三行加留白所需总高）便于自查"
+    },
+    {
+      "internalVersion": "0.3.0.3",
+      "date": "2026-10-19",
+      "summary": "修复横屏右侧贴边：横屏内容宽度改按实际组件口径累加（3 组两位数字 + 2 个冒号，而非 6 个单数字）——两位数的实测宽度未必等于单数字的两倍；并对横屏额外收紧 2% 字号，因为 TextMeasurer 的宽度测量比实际排版约小 1.8%，而横屏 Row 在超宽时 Arrangement.Center 会退化为左对齐、把溢出全堆到右侧（现象为左侧留白正常、右侧贴边）。另外调试包从本版起在应用名与界面版本号后追加「(测)」以示区分"
+    },
+    {
+      "internalVersion": "0.3.0.4",
+      "date": "2026-10-19",
+      "summary": "横屏改为实测校正而非整体缩窄：撤回上一版对横屏额外收紧 2% 的安全系数（那会使数字整体变小、离留白线更远），改为渲染后用 onGloballyPositioned 实测内容真实宽度，按「可用宽 /(实测比例 + 2×padding)」反解字号并迭代至偏差小于 0.5%，使数字恰好顶到留白边界；内容宽度口径同时改为按实际组件（3 组两位数字 + 2 个冒号）累加；诊断新增横屏实测宽度 mw 与基准字号 base 便于核对"
+    },
+    {
+      "internalVersion": "0.3.0.5",
+      "date": "2026-10-19",
+      "summary": "横屏越界续修：上一版实测校正未生效——onGloballyPositioned 测到的 mw 恰等于 usable−2×margin（994.5dp vs 993.6dp），说明 Row 宽度被父 Box 的 maxWidth 钳制，校正误判已达标；而 Text 在约束不足时仍越界绘制，故数字压过留白灰线。给横屏内容加 wrapContentWidth(unbounded=true) 解除约束后，实测值才反映真实内容宽度，字号校正得以收敛使笔迹恰落灰线"
+    },
+    {
+      "internalVersion": "0.3.0.6",
+      "date": "2026-10-19",
+      "summary": "新增电量百分比显示：横屏左下角以当前数码字体显示整数电量，七段字体无 % 字形故用「.:」代替百分比符号；电量通过 ACTION_BATTERY_CHANGED 粘性广播获取（注册即回传当前值、变化时推送，无需轮询与任何权限），并按要求使用 RECEIVER_NOT_EXPORTED；注册失败时静默不显示，不影响界面"
+    },
+    {
+      "internalVersion": "0.3.0.7",
+      "date": "2026-10-19",
+      "summary": "电量显示与信息常驻：① 电量移入横屏过渡提示统一管理，位置由屏幕边改为对齐留白边界（padding = visibleMargin），不再越出边距，并加入淡入淡出组；② 新增分块常驻——ISO 时间、字体名、版本号、电量四块各自独立，单击某块即让该块常驻显示（强制不透明、不再随提示淡出），再次单击同一块则重新加入淡入淡出组；块自身消费点击事件，不会误触全屏手势的重播/延长逻辑"
+    },
+    {
+      "internalVersion": "0.3.0.8",
+      "date": "2026-10-19",
+      "summary": "修正常驻触发条件：此前块的点击区域始终有效，而无信息显示时点中该区域也会把块钉出来；改为 overlay 内部维护播放阶段，仅当提示处于停留显示阶段（Holding）或该块已常驻（用于取消）时才响应单击，取消常驻不受此限制"
+    },
+    {
+      "internalVersion": "0.3.0.9",
+      "date": "2026-10-19",
+      "summary": "常驻取消改为淡出，并按字体族区分电量百分号：① 四块信息的常驻状态改用 animateFloatAsState 维护权重（0→1 淡入、1→0 淡出），块 alpha 取整体 alpha 与常驻权重的较大者——取消常驻时随权重回落而淡出，不再瞬间消失；② 电量符号按字体族区分：七段无 % 字形用「.:」，十四段有 % 字形则直接用 %"
+    },
+    {
+      "internalVersion": "0.3.0.10",
+      "date": "2026-10-19",
+      "summary": "新增命中范围可视化（调试）：给 ISO 时间、字体名、版本号、电量四块各画彩色方框，颜色依次为红/绿/蓝/黄，框内即「判定为元素」的可点击范围，框外为背景（触发重播/延长）；范围由 boundsInParent 实测，与井字线同坐标系，便于核对判定范围与实际视觉边界是否一致；仅在调试包的 showDebugMarks 下显示"
+    },
+    {
+      "internalVersion": "0.3.0.11",
+      "date": "2026-10-19",
+      "summary": "修正字体名命中框坐标：该块两层文字位于固定宽度容器内，boundsInParent 返回的是相对容器的坐标而非可用区，导致方框跑到画面顶部；改为同时记录容器自身位置并与文字相对坐标相加得到正确的屏幕坐标。其余三块（ISO 时间、版本号、电量）直接父级即可用区，原本正确"
+    },
+    {
+      "internalVersion": "0.3.0.12",
+      "date": "2026-10-19",
+      "summary": "命中判定两项修正：① 版本号改为外层 Box 定位、内层 Text 按自身字符宽度测量，命中范围从整行收窄到文字本身（与其余三块一致）；② 新增 hitModifier——只有在该块可见（已常驻，或提示处于停留显示阶段）时才挂点击处理，隐藏状态不挂，点击因此穿透到背景手势按「点空白」处理（重播/延长），不再被不可见的块吞掉"
+    },
+    {
+      "internalVersion": "0.3.1.1",
+      "date": "2026-10-19",
+      "summary": "修复电量消失与常驻不继承：① 电量读不到——ACTION_BATTERY_CHANGED 是系统广播，注册时误用 RECEIVER_NOT_EXPORTED 会把它挡掉，导致 batteryPercent 恒为 -1、电量块不渲染；改为 RECEIVER_EXPORTED。② 常驻不继承——四块的 pin 状态原本只是 remember 里的布尔，重启必然归零（四块共同隐患，非电量独有）；新增 ClockPreferences.pinnedInfoBlocks 以标识字符串集合持久化，overlay 以该集合初始化四块状态、任一变化即写回，重启后继续生效"
+    },
+    {
+      "internalVersion": "0.3.1.2",
+      "date": "2026-10-19",
+      "summary": "电量块改为默认常驻：信息块标识提取为 InfoBlocks.kt 的共享常量，并新增 DEFAULT_PINNED_INFO_BLOCKS = {battery}；ClockPreferences.pinnedInfoBlocks 的默认值即该集合，因此首次启动电量即恒常驻，而用户取消后会写入实际选择、重启不会被默认值覆盖；overlay 形参默认值同步"
+    },
+    {
+      "internalVersion": "0.3.2.1",
+      "date": "2026-10-20",
+      "summary": "字体替换测试版（HSSeg7 v2）：把 HSSeg7 的 ttc 解包覆盖 res/font 下 24 个七段字体资源，命名与代码引用不变；已验证每个字重的 colon 为 2 轮廓、period 为 1 轮廓、zero advance 816，度量与 DSEG7 一致；原字体备份于 tools/font_backup_dseg7"
+    },
+    {
+      "internalVersion": "0.3.2.2",
+      "date": "2026-10-23",
+      "summary": "十四段换字体测试版（第一版，已判定不可用）：HSSeg16 ttc 覆盖 dseg_14_ 全部 24 个资源；发现 ~ 只有 4 轮廓（非十六段全亮）、冒号右移超出 advance，故未作为交付版本"
+    },
+    {
+      "internalVersion": "0.3.2.3",
+      "date": "2026-10-23",
+      "summary": "十四段换字体测试版 v3：HSSeg16（20261023041504）覆盖 dseg_14_ 全部 24 个资源；已验收冒号为 22 点圆角、顶/底横段连续无缺口、中横拉齐共边、~ 为 16 轮廓满格、字重 300/400/700 正确；原 DSEG14 备份于 tools/font_backup_dseg14"
+    },
+    {
+      "internalVersion": "0.3.2.4",
+      "date": "2026-10-23",
+      "summary": "十四段换字体测试版 v4：HSEG16（050940）覆盖 dseg_14_ 全部 24 个资源，已验收冒号圆角、顶底横段无缺口、全亮字形十六段满格、度量与 DSEG14 一致"
+    },
+    {
+      "internalVersion": "0.3.2.5",
+      "date": "2026-10-23",
+      "summary": "十四段换字体测试版 v5：HSEG16（051450）覆盖 dseg_14_ 全部 24 个资源；冒号圆角居中、顶底横段无缺口、全亮字形十六段满格；斜体数字外扩与 DSEG14 一致，冒号在斜体中不倾斜（设计选择）"
+    },
+    {
+      "internalVersion": "0.3.2.6",
+      "date": "2026-10-23",
+      "summary": "十四段换字体测试版 v6：HSEG16（052615）覆盖 dseg_14_ 全部 24 个资源；period 已跨原点、斜体冒号已倾斜、顶底无缺口、全亮字形满格"
+    },
+    {
+      "internalVersion": "0.3.2.7",
+      "date": "2026-10-25",
+      "summary": "十四段换字体测试版 v7：HSEG16 0.1.0.4 覆盖 dseg_14_ 全部 24 个资源；period 斜体补偿已加，冒号圆角与斜体倾斜、顶底无缺口、全亮字形满格，24 个字重全部通过验收"
+    },
+    {
+      "internalVersion": "0.3.2.8",
+      "date": "2026-10-25",
+      "summary": "等宽切换测试版：新增 PUA 小写等宽映射与双击字体名块切换（持久化）；信息块文字改为数字同色、加半透明灰底便于查看字形偏移；移除点击处的彩色方框；字体名块显示 mono 标识；字体换为 HSEG16 0.1.0.9（每字重含 26 个等宽码位 U+E000-U+E019，advance 408）"
+    },
+    {
+      "internalVersion": "0.3.2.9",
+      "date": "2026-10-26",
+      "summary": "等宽对照测试版：灰板改为逐字符 ~ 全亮字形铺底（仅 debug）；Mono 码位当前 advance 仍为 816，等宽切换暂无收窄效果，待字体侧按 x*0.5 重做；双击字体名块切换等宽，信息块文字改数字同色，移除彩色方框"
+    },
+    {
+      "internalVersion": "0.3.2.10",
+      "date": "2026-10-26",
+      "summary": "逐字符 ~ 铺底改为按基线对齐（原先贴绘制区顶部，视觉上浮在字上方）；其余同 0.3.2.9"
+    },
+    {
+      "internalVersion": "0.3.2.11",
+      "date": "2026-10-26",
+      "summary": "修正 ~ 铺底位置：去掉 platformStyle 使基线与 Text 一致（原先整体下移）；空格统一显示为下划线；汉字等非 ASCII 字符的铺底跳过但保留占位宽度"
+    },
+    {
+      "internalVersion": "0.3.2.12",
+      "date": "2026-10-26",
+      "summary": "铺设层改为双 Text 叠加（与前景同 textAlign/行高，杜绝偏移）；除点与冒号外全部字符换为 ~ 作底；空格显示为下划线；非 ASCII 铺底跳过；测试标记由 (测) 改为 (CS)"
+    },
+    {
+      "internalVersion": "0.3.2.13",
+      "date": "2026-10-26",
+      "summary": "字体名格式按 OpenType 惯例重排：去掉非标准的 SERIES，Mono 作为宽度变体置于 variant 之后、字重之前（如 DSEG14 Modern Mono Bold Italic）；Mono 首字母大写；等宽基准串同步更新"
+    },
+    {
+      "internalVersion": "0.3.2.14",
+      "date": "2026-10-26",
+      "summary": "修复七段场景：铺底改用 8 字形（七段全亮），并禁用等宽的 PUA 映射（七段字体无该码位，之前显示为豆腐块）；字体换为 HSEG16 0.1.0.14"
+    },
+    {
+      "internalVersion": "0.3.2.15",
+      "date": "2026-10-26",
+      "summary": "修正字体名超宽：字号基准串改用下划线形式并与真实显示宽度一致（字体里空格 advance 仅 200、下划线 816，空格转下划线后实际宽了 11.7%），并改用真正最长的样式 Light Italic"
+    },
+    {
+      "internalVersion": "0.3.2.16",
+      "date": "2026-10-26",
+      "summary": "Mono 语义修正：Mono 码位是「调整亮段后的饱满版小写」（advance 仍 816、笔迹更宽），用于消除常规小写在16段网格中左右的视觉空白，而非等宽收窄；24 个字重按新判据全部通过（advance 816 且笔迹不低于常规）"
+    },
+    {
+      "internalVersion": "0.3.2.17",
+      "date": "2026-10-26",
+      "summary": "新增灰底开关：双击时钟数字区切换（默认显示灰底）；默认时钟含熄灭段、信息块文字为时钟同色并铺灰色字框；切换后时钟只留纯亮段、信息文字转灰且不铺字框；配色互换保留在背景区双击；灰底状态持久化并与配色互换互不干扰"
+    },
+    {
+      "internalVersion": "0.3.2.18",
+      "date": "2026-10-26",
+      "summary": "修复双击时钟区无效果：双击改为在根层按坐标判定（数字区=切灰底，背景=换配色），数字区矩形统一用 boundsInRoot 记录；诊断新增 ghost 状态、双击次数与判定、数字区矩形"
+    },
+    {
+      "internalVersion": "0.3.2.19",
+      "date": "2026-10-26",
+      "summary": "修复双击灰底无效：ClockRoute 到 ClockScreen 漏传 ghostVisible/onToggleGhost，导致状态恒为默认、回调为空；诊断文本加半透明黑底与描边阴影"
+    },
+    {
+      "internalVersion": "0.3.2.20",
+      "date": "2026-10-26",
+      "summary": "补齐灰底开关遗漏的两处颜色：ISO 时间块与旧字体名交叉淡化层仍用固定白色，导致关灰底后不变灰；现五个信息块统一受 ghostVisible 控制"
+    },
+    {
+      "internalVersion": "0.3.2.21",
+      "date": "2026-10-26",
+      "summary": "字体换为 HSEG16 0.1.0.16；其余功能同 0.3.2.20（五块颜色统一受灰底开关控制、双击数字区切换灰底、双击背景换配色、诊断带底与描边）"
+    },
+    {
+      "internalVersion": "0.3.2.22",
+      "date": "2026-10-26",
+      "summary": "换用两套正式版字体：HSEG16 1.0.0 覆盖 dseg_14_（24 个）、HSEG7 1.0.0 覆盖 hsseg_7_（24 个）；7 段 24/24 全部通过，14 段除顶底分段（16 段设计特征）外各项通过；功能同 0.3.2.21"
+    },
+    {
+      "internalVersion": "0.3.2.23",
+      "date": "2026-10-26",
+      "summary": "图标改为 192 个变体（48 字重 × 2 配色 × 2 灰底），排布换为 21 / 09:36:58 / 47（上下块均合法、重量差 0.0015、边缘留白 0.485）；ClockIconVariants 增加灰底维度，索引随 ghostVisible 变化"
+    },
+    {
+      "internalVersion": "0.3.2.24",
+      "date": "2026-10-26",
+      "summary": "字体显示名统一为正式名：七段 HSSeg 7 -> HSEG7、十四段 DSEG14 -> HSEG16（与字体族名一致）；字号基准串同步；字体文件本身无需修改"
+    },
+    {
+      "internalVersion": "0.3.2.25",
+      "date": "2026-10-26",
+      "summary": "字体资源统一重命名：hsseg_7_* -> hseg_7_*、dseg_14_* -> hseg_16_*（48 个文件 + 资源引用 + 两个工具脚本）；图标待切换值持久化，强制停止后下次启动可补做"
+    },
+    {
+      "internalVersion": "0.3.2.26",
+      "date": "2026-10-26",
+      "summary": "处理 Android 12+ 启动画面：系统会把被启动 alias 的前景图标叠在黑色 windowBackground 上，白线前景在纯黑上只剩亮段、观感碎裂；新增 values-v31 主题把 splash 图标置为透明，启动应为纯黑"
+    },
+    {
+      "internalVersion": "0.3.2.27",
+      "date": "2026-10-26",
+      "summary": "新增长按版本号打开应用信息面板：面向用户的应用描述、八条手势说明、桌面图标说明；右上角方框×关闭，点外部任意区域也可关闭；恢复默认设置需二次点击确认"
+    },
+    {
+      "internalVersion": "0.3.2.28",
+      "date": "2026-10-26",
+      "summary": "应用信息面板调整：标题改为「时分秒(HoMiSe)」、描述精简为「纯净的数码管风格时钟。」、最高亮度改为「开关最高亮度」、图标生效说明改为「返回桌面后生效」；手势表改两列排布，卡片上限放宽到 560dp，横屏不再被截断"
+    },
+    {
+      "internalVersion": "0.3.2.29",
+      "date": "2026-10-26",
+      "summary": "信息面板：修掉圆角白边（background 未带 shape）、恢复默认设置移到标题行、版本号后新增检查更新按钮（暂提示尚未发布）、描述后预留 GitHub 位置"
+    },
+    {
+      "internalVersion": "0.3.2.30",
+      "date": "2026-10-26",
+      "summary": "信息面板按钮改为紧跟文字左对齐：恢复默认设置紧随应用名、检查更新紧随版本号，避免与右上角关闭按钮相邻误触"
+    },
+    {
+      "internalVersion": "0.3.2.31",
+      "date": "2026-10-26",
+      "summary": "面板调整 去掉检查更新 恢复默认移到版本号后 增加项目仓库行"
+    },
+    {
+      "internalVersion": "0.3.2.32",
+      "date": "2026-10-26",
+      "summary": "面板 仓库地址移到标题 面板打开时隐藏诊断 压缩间距防裁切"
+    },
+    {
+      "internalVersion": "0.3.2.33",
+      "date": "2026-10-26",
+      "summary": "面板 怎么用改操作 竖屏两列 链接单行不回车"
+    },
+    {
+      "internalVersion": "0.3.2.34",
+      "date": "2026-10-26",
+      "summary": "面板 其他区两列 增加竖屏状态说明"
+    },
+    {
+      "internalVersion": "0.3.2.35",
+      "date": "2026-10-26",
+      "summary": "面板 描述列对齐 操作区键宽统一88"
+    },
+    {
+      "internalVersion": "1.0.0.0",
+      "date": "2026-10-26",
+      "summary": "定格正式版本 1.0.0（自 0.3.2.35）：正式版 1.0：48 款 HSEG 段码字体、手势切换字体与配色、192 个图标变体、应用信息面板"
+    },
+    {
+      "internalVersion": "1.0.0.1",
+      "date": "2026-10-26",
+      "summary": "面板仓库地址可点击跳转"
+    },
+    {
+      "internalVersion": "1.0.0.0",
+      "date": "2026-10-26",
+      "summary": "重新导出正式版本 1.0.0（自 0.3.2.35）：正式版 1.0：48 款 HSEG 段码字体、手势切换字体与配色、192 个图标变体、应用信息面板与可点击仓库地址"
+    }
+  ],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-16",
+      "bump": "minor",
+      "fromInternal": "0.1.0.0",
+      "summary": "首个正式版本：数码管时钟主界面（DSEG7 时分秒、冒号闪烁、日期、屏幕常亮、字号自适应），含完整构建链与版本号规则",
+      "versionCode": 10001,
+      "fileName": "HoMiSe_0.1.0_20261016160403_93679e2dba5c6fe3.APK",
+      "sha256": "93679e2dba5c6fe37d869dafe57e344df3d70dadb740bec23dc17c92e503d0a3"
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-16",
+      "bump": "minor",
+      "fromInternal": "0.2.0.30",
+      "summary": "第二个正式版本：新增灰色全8熄灭段、挖孔避让（safeInset 随方向自动换边）、沉浸式全屏（隐藏状态栏与导航栏）；版式确立以冒号笔迹宽为唯一留白基准并由实测排版度量驱动字号；根治横屏秒数裁切/重叠/叠放、竖屏越界与重叠、fontScale 干扰、留白锚点错位等缺陷",
+      "versionCode": 20001,
+      "fileName": "HoMiSe_0.2.0_20261016205352_82ab3fb7606b13c4.APK",
+      "sha256": "82ab3fb7606b13c4d3716e90cb560ca946c47b563c7a3bb044f875c4d6a97408"
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-10-17",
+      "bump": "minor",
+      "fromInternal": "0.3.0.27",
+      "summary": "",
+      "versionCode": 30001,
+      "fileName": "HoMiSe_0.3.0_20261017082753_ea3257c39a13efa5.APK",
+      "sha256": "ea3257c39a13efa550ee5951db2e82288c157cab5f3f02bc29b3c4862c7f8e43"
+    },
+    {
+      "version": "0.3.1",
+      "date": "2026-10-19",
+      "bump": "patch",
+      "fromInternal": "0.3.1.12",
+      "summary": "平板适配与信息分块：修复平板竖屏底部越界（竖屏行框误用渲染 sp 值，fontScale<1 时被放大 1/fontScale 倍）、横屏右侧贴边（内容宽度改按 3 组两位数+2 冒号累加，并以 unbounded 解除父约束后用实测宽度反解字号）；新增横屏电量百分比与四块信息的分块常驻（单击常驻、再击淡出取消、隐藏时不拦截点击）",
+      "versionCode": 30101,
+      "fileName": "HoMiSe_0.3.1_20261019040112_23041da4d3efaa82.APK",
+      "sha256": "23041da4d3efaa82a8835ba5dd2d158fdc9c981f9fe515529bfbbd6118a82394"
+    },
+    {
+      "version": "0.3.2",
+      "date": "2026-10-19",
+      "bump": "patch",
+      "fromInternal": "0.3.2.2",
+      "summary": "修复电量块消失：ACTION_BATTERY_CHANGED 为系统广播，注册误用 RECEIVER_NOT_EXPORTED 会将其挡掉，导致电量恒为 -1 而不渲染，改为 RECEIVER_EXPORTED；修复常驻状态不继承（四块共同隐患，原本仅是内存布尔），新增 pinnedInfoBlocks 以标识字符串集合持久化；电量块改为默认常驻，默认值仅在从未写入偏好时生效，用户取消后重启不被覆盖",
+      "versionCode": 30201,
+      "fileName": "HoMiSe_0.3.2_20261019044703_c2f56464c732f6e5.APK",
+      "sha256": "c2f56464c732f6e585a30d5476a0696ffb53a77a6c1eabcd3181a7e76bff658c"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-26",
+      "bump": "major",
+      "fromInternal": "0.3.2.35",
+      "summary": "正式版 1.0：48 款 HSEG 段码字体、手势切换字体与配色、192 个图标变体、应用信息面板与可点击仓库地址",
+      "versionCode": 1000001,
+      "fileName": "HoMiSe_1.0.0_20261026042354_cb1637750348b2a2.APK",
+      "sha256": "cb1637750348b2a2688d86cae4d425a9c08dc7cb38e74df15861d7a090759a52"
+    }
+  ],
+  "updated": "2026-10-26"
+}

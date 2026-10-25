@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 调试包专用：应用名追加「(CS)」，与正式包在桌面上即可区分。 -->
+<resources>
+    <string name="app_name">HoMiSe(CS)</string>
+</resources>

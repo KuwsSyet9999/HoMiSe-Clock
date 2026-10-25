@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ 的启动画面：背景保持纯黑，图标置空。
+         时钟是全屏黑底的显示器，启动瞬间出现一个白色小图标会非常突兀。 -->
+    <style name="Theme.HoMiSe" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowSplashScreenBackground">@android:color/black</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_blank</item>
+    </style>
+</resources>
