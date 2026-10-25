@@ -9,6 +9,7 @@
 | 项 | 值 |
 | --- | --- |
 | 项目路径 | `D:\DSHin\HoMiSe` |
+| 仓库 | <https://github.com/KuwsSyet9999/HoMiSe-Clock>（公开，代码 MIT，字体 OFL 1.1） |
 | 应用 | Android 数码管时钟「时分秒 / HoMiSe」 |
 | 技术栈 | Kotlin + Jetpack Compose (BOM 2024.09.00)、AGP 8.7.3、Kotlin 2.0.20、Gradle 8.9、JDK 17 |
 | SDK | compileSdk / targetSdk 35，minSdk 26 |
@@ -220,6 +221,10 @@ python tools\archive-release.py
 6. **`Text` 的 `textAlign`/`lineHeight` 决定字形位置** —— 用 Canvas 另画一层必然对不齐；铺底改用"两个 Text 层叠"才解决。
 7. **`boundsInParent` 是相对最近父级**，判断根坐标点击必须用 `boundsInRoot`。
 8. **`version.json` 曾被长摘要写坏** —— 现在 `export_apk.py` 用短摘要，且损坏后可用 `tools/repair-version-json.py` 修复。
+9. **沙箱内 `git` 推送必须绕开 schannel**：默认后端报 `SEC_E_NO_CREDENTIALS`，改用
+   `git -c http.sslBackend=openssl -c credential.helper= push <token-url> main` 可成功；
+   拉取（fetch/clone）偶发 `Recv failure: Connection was reset`，可改用 `gh api` 读取远端数据。
+   `gh` 依赖 PATH 中的 git，调用前需把 `C:\Program Files\Git\cmd` 前置到 PATH。
 
 ---
 
@@ -229,8 +234,9 @@ python tools\archive-release.py
 1.0.0 实拍截图（`docs/screenshots/clock-1.0.0-landscape.png`：05:20:13、HSEG16 Modern Mono
 Bold Italic、黑底灰衬、91%）。
 
-待办：用户实测确认 → 仓库仍为空（本地未 `git init`，远程 `HoMiSe-Clock` 未创建，用户选择先不动）；
-正式仓库确定后替换 `REPO_URL` 并同步 README 链接。
+待办：用户实测确认。仓库已于 2026-10-26 创建并推送（公开，默认分支 `main`，822 个文件、1 个提交
+`ec7342e`；`.gitignore` 排除了 `tools/` 工具链、`release/`、`font-source/`、`repo/`、`keystore/`），
+面板里的 `REPO_URL` 现在指向真实仓库，点击可跳转。
 
 内部迭代 `1.0.0.1`（`release/HoMiSe_1.0.0.1_*.APK`）为面板里的仓库地址加了点击跳转
 （`Modifier.openRepoLink()` → `ACTION_VIEW`，横竖屏两处都生效，无浏览器时静默）。已在 MuMu 上
