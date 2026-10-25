@@ -8,6 +8,10 @@
 - **技术栈**：Kotlin · Jetpack Compose · Material 3
 - **字体**：HSEG7 / HSEG16 共 48 款，本项目作者基于 DSEG 改造
 
+## 下载
+
+从 [Releases](https://github.com/KuwsSyet9999/HoMiSe-Clock/releases/latest) 下载最新安装包（Android 8.0+），每个包附同名 `.sha256` 校验文件。
+
 ## 特性
 
 **布局**

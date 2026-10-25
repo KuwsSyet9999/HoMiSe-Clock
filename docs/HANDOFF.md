@@ -75,7 +75,7 @@ https://github.com/KuwsSyet9999/HoMiSe-Clock        ← 单行、字号按宽度
 
 **位置**：`ClockScreen.kt` 的 `AboutPanel`、`RepoUrlLine`、`StackedEntry`、`ResetButton`，常量 `REPO_URL`。
 
-**说明**：竖屏不渲染 `InfoOverlay`（无版本号块），面板只能在横屏长按版本号打开；旋转到竖屏后 Compose 重组保留 `showAbout`，因此竖屏面板可见但无入口。仓库地址为暂定值，正式仓库确定后只改 `REPO_URL` 一行。
+**说明**：竖屏不渲染 `InfoOverlay`（无版本号块），面板只能在横屏长按版本号打开；旋转到竖屏后 Compose 重组保留 `showAbout`，因此竖屏面板可见但无入口。仓库地址已指向正式仓库（2026-10-26 创建并发布 `1.0.0`），点击可跳转。
 
 ---
 
@@ -103,7 +103,16 @@ python tools\export_apk.py --nobump
 # 导出正式版（须先由需求方确认版本号；三条命令按序执行）
 python tools\export_release.py --version 1.0.0 --bump major --summary "变更摘要"
 python tools\archive-release.py
+
+# 上传到 GitHub Releases（在项目根执行；文件名需显式给出，不要用通配符）
+gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
+  "release/HoMiSe_1.0.0_<时间>_<哈希>.APK.sha256" `
+  --title "HoMiSe 1.0.0" --notes "变更摘要"
 ```
+
+`gh` 通过 API 上传，不受沙箱 schannel 限制；只有 `git push` 需要
+`-c http.sslBackend=openssl` 并重试。README 的「下载」一节指向
+`releases/latest`，无需每次改链接。
 
 `export_release.py` 会定格 `version.json`（current / release / history / releases）、构建
 `assembleRelease`、校验版本、命名 `HoMiSe_<版本>_<时间>_<哈希>.APK` 并写 `.sha256`；
@@ -234,13 +243,17 @@ python tools\archive-release.py
 1.0.0 实拍截图（`docs/screenshots/clock-1.0.0-landscape.png`：05:20:13、HSEG16 Modern Mono
 Bold Italic、黑底灰衬、91%）。
 
-待办：用户实测确认。仓库已于 2026-10-26 创建并推送（公开，默认分支 `main`，822 个文件、1 个提交
-`ec7342e`；`.gitignore` 排除了 `tools/` 工具链、`release/`、`font-source/`、`repo/`、`keystore/`），
-面板里的 `REPO_URL` 现在指向真实仓库，点击可跳转。
+待办：用户实测确认。仓库已于 2026-10-26 创建并推送（公开，默认分支 `main`；`.gitignore` 排除了
+`tools/` 工具链、`release/`、`font-source/`、`repo/`、`keystore/`），面板里的 `REPO_URL` 现在指向
+真实仓库，点击可跳转。
+
+`1.0.0` 已发布到 GitHub Releases：<https://github.com/KuwsSyet9999/HoMiSe-Clock/releases/tag/v1.0.0>
+（APK 与同名 `.sha256`，API 记录的 digest 与本地一致），README 的「下载」一节指向 `releases/latest`，
+以后发新版本只需新建 Release，链接不必改。
 
 内部迭代 `1.0.0.1`（`release/HoMiSe_1.0.0.1_*.APK`）为面板里的仓库地址加了点击跳转
 （`Modifier.openRepoLink()` → `ACTION_VIEW`，横竖屏两处都生效，无浏览器时静默）。已在 MuMu 上
-实测：点击后 Chrome 打开该地址并显示 404（仓库尚未创建）。
+实测：点击后 Chrome 打开该地址；仓库创建前显示 404，现在可正常打开。
 
 `1.0.0` 正式包已按用户确认**重新导出**，包含该改动（旧包被替换，`version.json` 与 `VERSIONING.md`
 的 1.0.0 记录已更新为新文件名与 SHA-256，`fromInternal` 仍保留 `0.3.2.35`）。`export_release.py`
