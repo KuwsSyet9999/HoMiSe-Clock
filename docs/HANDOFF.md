@@ -233,7 +233,7 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 | 图标 | 96 变体（24 字体 × 2 配色 × 2 灰底），全矢量 |
 | 信息块 | 去掉字体名块（剩 ISO / 版本 / 电量），Mono 交互移除 |
 | 面板标题 | 「时分秒S7」 |
-| 产物 | `s7/release/HMSS7_0.1.1_*.APK`（1.08 MB，相对完整版 2.57 MB −58%；界面显示 `v0.1.1`） |
+| 产物 | `s7/release/HMSS7_0.1.1_*.APK`（1.08 MB，相对完整版 2.57 MB −58%；应用显示名「时分秒S7」，界面版本 `v0.1.1`） |
 
 图标由 `s7/tools/make-s7-icons-a.py` 生成（复用主工程 `make-icon-variants.py` 的度量探针）。
 **Plan B（48 层 vector + `layer-list` item tint）实测失败**：launcher 只显示灰衬层，数字层丢失——
@@ -302,11 +302,13 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 HSEG7 简版 + Plan A 图标，包名 `com.homise.hmss7`。
 
 两个版本均已提交并推送到 <https://github.com/KuwsSyet9999/HoMiSe-Clock>（HEAD `107ce59`，
-`s7/` 作为仓库子目录）。GitHub Releases 已同时发布：
+`s7/` 作为仓库子目录）。GitHub Releases 已**合并发布**为一条 `v1.0.1`（Latest，标题
+「HoMiSe 1.0.1 + HMSS7 0.1.1」），同时含两个 APK 与各自的 `.sha256`：
 
-- `v1.0.1`（Latest）：`HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK` + `.sha256`
-- `hmss7-v0.1.1`：`HMSS7_0.1.1_20261027015845_4b4cfe9f3efc5d2d.APK` + `.sha256`
+- `HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK`
+- `HMSS7_0.1.1_20261027021106_4b4cfe9f3efc5d2d.APK`
 
-README 的「下载」指向 `releases/latest`，因此始终落到完整版最新 Release。
+注意：`HMSS7` 只用于 **Release 标题与文件名**；应用内显示名仍是「时分秒S7」（中文）/ `HMSS7`（英文环境）。
+README 的「下载」指向 `releases/latest`，因此始终落到这条合并 Release。
 
 待办：用户在真机实测两个正式包；`release/` 里的旧正式包按“全部保留”策略留存。
