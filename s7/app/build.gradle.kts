@@ -152,6 +152,12 @@ android {
 
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        // S7 精简：Kotlin 模块元数据与 baseline profile 都不参与运行
+        resources.excludes += "kotlin/**"
+        resources.excludes += "*.prof"
+        resources.excludes += "*.profm"
+        // 时钟只用 Compose 文本与圆角形状，不涉及 Path 解析
+        jniLibs.excludes += "**/libandroidx.graphics.path.so"
     }
 }
 

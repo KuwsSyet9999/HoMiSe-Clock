@@ -228,12 +228,12 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 | --- | --- |
 | 应用名 | 中文「时分秒S7」，英文/默认 `HMSS7` |
 | applicationId | `com.homise.hmss7`（debug 加 `.debug`） |
-| 版本 | `0.1.0`（S7 首版正式），独立 `s7/version.json` |
+| 版本 | `0.1.1`（S7 当前正式版），独立 `s7/version.json` |
 | 字体 | HSEG 1.1.0（只保留 HSEG7 4 族 × 6 样式 = 24 个）；`DsegFamily` 已裁到 4 项 |
 | 图标 | 96 变体（24 字体 × 2 配色 × 2 灰底），全矢量 |
 | 信息块 | 去掉字体名块（剩 ISO / 版本 / 电量），Mono 交互移除 |
 | 面板标题 | 「时分秒S7」 |
-| 产物 | `s7/release/HMSS7_0.1.0_*.APK`（1.18 MB，相对完整版 2.57 MB −54%；界面显示 `v0.1.0`） |
+| 产物 | `s7/release/HMSS7_0.1.1_*.APK`（1.08 MB，相对完整版 2.57 MB −58%；界面显示 `v0.1.1`） |
 
 图标由 `s7/tools/make-s7-icons-a.py` 生成（复用主工程 `make-icon-variants.py` 的度量探针）。
 **Plan B（48 层 vector + `layer-list` item tint）实测失败**：launcher 只显示灰衬层，数字层丢失——
@@ -244,6 +244,11 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 
 体积实测（1.18 MiB，合计 1208 KB）：dex 666.5、图标 266、字体+元数据 89.5、arsc 81.4、
 `.so` 36.5、manifest 5.4、打包开销 62.2。
+
+**`0.1.1` 精简版（正式）**：在 `0.1.0` 基础上再压到 **1.08 MB（−8.5%）**——24 个字体子集到
+`0-9 : . - + T Z v`（288.2 → 71.5 KB）、移除 `libandroidx.graphics.path.so`（36.5 KB）、
+`kotlin/*.kotlin_builtins`（10.2 KB）、baseline profile（2.8 KB）、R8 `-repackageclasses`。
+已实机验证 ISO/版本/电量正常、无缺字、无崩溃。
 
 ### 6.2 完整版图标与字体改造（`1.0.0.1` 测试包）
 

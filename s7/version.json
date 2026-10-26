@@ -6,13 +6,13 @@
   "current": {
     "major": 0,
     "minor": 1,
-    "patch": 0,
+    "patch": 1,
     "iteration": 0
   },
   "stage": "release",
-  "releaseVersion": "0.1.0",
-  "lastRelease": "0.1.0",
-  "internalVersion": "0.1.0.0",
+  "releaseVersion": "0.1.1",
+  "lastRelease": "0.1.1",
+  "internalVersion": "0.1.1.0",
   "nextRelease": {
     "plannedVersion": null,
     "bump": "minor",
@@ -25,6 +25,11 @@
       "internalVersion": "0.1.0.0",
       "date": "2026-10-27",
       "summary": "定格 S7 首版正式 0.1.0：HSEG7 简版（Plan A 图标、字体 1.1.0、去掉字体名块与 Mono）"
+    },
+    {
+      "internalVersion": "0.1.1.0",
+      "date": "2026-10-27",
+      "summary": "S7 0.1.1：字体子集、移除 .so/Kotlin 元数据/baseline profile、R8 repackage"
     }
   ],
   "releases": [
@@ -37,6 +42,16 @@
       "versionCode": 10001,
       "fileName": "HMSS7_0.1.0_20261027013301_66e3f9d279dd58a1.APK",
       "sha256": "66e3f9d279dd58a1d727c91a4b5787c7a4ed2e3d73622fc260a6dba11d4c949e"
+    },
+    {
+      "version": "0.1.1",
+      "date": "2026-10-27",
+      "bump": "patch",
+      "fromInternal": "0.1.0.1",
+      "summary": "S7 精简版：字体子集、去 .so 与元数据、R8 repackage",
+      "versionCode": 10101,
+      "fileName": "HMSS7_0.1.1_20261027015845_4b4cfe9f3efc5d2d.APK",
+      "sha256": "4b4cfe9f3efc5d2d78ac57ff4a64e7077772a668532176319ff887d1670bdc4f"
     }
   ],
   "updated": "2026-10-27"
