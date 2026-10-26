@@ -311,4 +311,8 @@ HSEG7 简版 + Plan A 图标，包名 `com.homise.hmss7`。
 注意：`HMSS7` 只用于 **Release 标题与文件名**；应用内显示名仍是「时分秒S7」（中文）/ `HMSS7`（英文环境）。
 README 的「下载」指向 `releases/latest`，因此始终落到这条合并 Release。
 
+**介绍页截图**：已随 HSEG 1.1.0 重拍为 `docs/screenshots/clock-1.0.1-landscape.png`
+（1.0.1、05:20:13、HSEG16 Modern Mono Bold Italic、黑底灰衬、91% 电量、横屏），
+README 第 5 行引用已更新，旧的 1.0.0 截图已删除。
+
 待办：用户在真机实测两个正式包；`release/` 里的旧正式包按“全部保留”策略留存。
