@@ -7,12 +7,12 @@
     "major": 0,
     "minor": 1,
     "patch": 0,
-    "iteration": 1
+    "iteration": 0
   },
-  "stage": "internal",
+  "stage": "release",
   "releaseVersion": "0.1.0",
-  "lastRelease": "",
-  "internalVersion": "0.1.0.1",
+  "lastRelease": "0.1.0",
+  "internalVersion": "0.1.0.0",
   "nextRelease": {
     "plannedVersion": null,
     "bump": "minor",
@@ -20,7 +20,24 @@
     "confirmedBy": null,
     "note": "正式导出须先由需求方确认版本号，再运行 promote"
   },
-  "history": [],
-  "releases": [],
+  "history": [
+    {
+      "internalVersion": "0.1.0.0",
+      "date": "2026-10-27",
+      "summary": "定格 S7 首版正式 0.1.0：HSEG7 简版（Plan A 图标、字体 1.1.0、去掉字体名块与 Mono）"
+    }
+  ],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-27",
+      "bump": "minor",
+      "fromInternal": "0.1.0.1",
+      "summary": "S7 首版正式：HSEG7 简版，Plan A 矢量图标，字体 1.1.0",
+      "versionCode": 10001,
+      "fileName": "HMSS7_0.1.0_20261027013301_66e3f9d279dd58a1.APK",
+      "sha256": "66e3f9d279dd58a1d727c91a4b5787c7a4ed2e3d73622fc260a6dba11d4c949e"
+    }
+  ],
   "updated": "2026-10-27"
 }

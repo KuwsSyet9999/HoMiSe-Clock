@@ -13,8 +13,8 @@
 | 应用 | Android 数码管时钟「时分秒 / HoMiSe」 |
 | 技术栈 | Kotlin + Jetpack Compose (BOM 2024.09.00)、AGP 8.7.3、Kotlin 2.0.20、Gradle 8.9、JDK 17 |
 | SDK | compileSdk / targetSdk 35，minSdk 26 |
-| 当前版本 | **`1.0.0`** 正式版；内部迭代 **`1.0.0.1`**（图标 Plan A + 字体 HSEG 1.1.0 测试包） |
-| 最近产物 | `release/HoMiSe_1.0.0.1_20261027012317_b3aefbc20a4a11bb.APK`（1.88 MB，−27%，界面显示 `v1.0.0.1`） |
+| 当前版本 | **`1.0.1`**（正式版，2026-10-27 导出），versionCode `1000101` |
+| 最近产物 | `release/HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK`（1.88 MB，−27%，界面显示 `v1.0.1`） |
 
 ---
 
@@ -228,12 +228,12 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 | --- | --- |
 | 应用名 | 中文「时分秒S7」，英文/默认 `HMSS7` |
 | applicationId | `com.homise.hmss7`（debug 加 `.debug`） |
-| 版本 | `0.1.0`，独立 `s7/version.json` |
+| 版本 | `0.1.0`（S7 首版正式），独立 `s7/version.json` |
 | 字体 | HSEG 1.1.0（只保留 HSEG7 4 族 × 6 样式 = 24 个）；`DsegFamily` 已裁到 4 项 |
 | 图标 | 96 变体（24 字体 × 2 配色 × 2 灰底），全矢量 |
 | 信息块 | 去掉字体名块（剩 ISO / 版本 / 电量），Mono 交互移除 |
 | 面板标题 | 「时分秒S7」 |
-| 产物 | `s7/release/HMSS7_0.1.0.1_*.APK`（1.18 MB，相对完整版 2.57 MB −54%；界面显示 `v0.1.0.1`） |
+| 产物 | `s7/release/HMSS7_0.1.0_*.APK`（1.18 MB，相对完整版 2.57 MB −54%；界面显示 `v0.1.0`） |
 
 图标由 `s7/tools/make-s7-icons-a.py` 生成（复用主工程 `make-icon-variants.py` 的度量探针）。
 **Plan B（48 层 vector + `layer-list` item tint）实测失败**：launcher 只显示灰衬层，数字层丢失——

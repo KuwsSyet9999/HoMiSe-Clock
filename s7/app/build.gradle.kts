@@ -119,9 +119,13 @@ android {
             if (hasSigningKey) {
                 signingConfig = signingConfigs.getByName("release")
             }
-            // S7 始终是测试版：release 包也显示四位版本号（含迭代序号），
-            // 便于与完整版及不同迭代区分。
-            buildConfigField("String", "DISPLAY_VERSION", "\"$versionNameText.$vIteration\"")
+            // 正式版显示三位；用 -PtestBuild 构建测试包时显示迭代号。
+            val displayVersion = if (project.hasProperty("testBuild")) {
+                "\"$versionNameText.$vIteration\""
+            } else {
+                "\"$versionNameText\""
+            }
+            buildConfigField("String", "DISPLAY_VERSION", displayVersion)
         }
         debug {
             applicationIdSuffix = ".debug"
