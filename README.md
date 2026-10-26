@@ -2,7 +2,7 @@
 
 把 Android 设备变成一台数码管时钟：纯黑底、白色段码字形、`时:分:秒` 占满全屏，离线运行，不申请任何权限。
 
-![横屏界面](docs/screenshots/clock-1.0.0-landscape.png)
+![横屏界面](docs/screenshots/clock-1.0.1-landscape.png)
 
 - **平台**：Android 8.0+（minSdk 26，targetSdk 35）
 - **技术栈**：Kotlin · Jetpack Compose · Material 3
