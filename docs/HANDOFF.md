@@ -301,8 +301,12 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 **S7 `0.1.0`**：首版正式（`s7/release/HMSS7_0.1.0_*.APK`，1.18 MB，界面 `v0.1.0`），
 HSEG7 简版 + Plan A 图标，包名 `com.homise.hmss7`。
 
-两个版本均已提交并推送到 <https://github.com/KuwsSyet9999/HoMiSe-Clock>（HEAD `744f2ea`，
-`s7/` 作为仓库子目录）。GitHub Release 目前仍是 `v1.0.0`；需要时按 3.2 的 `gh release create`
-流程补发 `v1.0.1`（上传 `release/HoMiSe_1.0.1_*.APK` 与 `.sha256`）。
+两个版本均已提交并推送到 <https://github.com/KuwsSyet9999/HoMiSe-Clock>（HEAD `107ce59`，
+`s7/` 作为仓库子目录）。GitHub Releases 已同时发布：
+
+- `v1.0.1`（Latest）：`HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK` + `.sha256`
+- `hmss7-v0.1.1`：`HMSS7_0.1.1_20261027015845_4b4cfe9f3efc5d2d.APK` + `.sha256`
+
+README 的「下载」指向 `releases/latest`，因此始终落到完整版最新 Release。
 
 待办：用户在真机实测两个正式包；`release/` 里的旧正式包按“全部保留”策略留存。
