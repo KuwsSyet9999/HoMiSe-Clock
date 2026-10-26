@@ -277,27 +277,27 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
    `git -c http.sslBackend=openssl -c credential.helper= push <token-url> main` 可成功；
    拉取（fetch/clone）偶发 `Recv failure: Connection was reset`，可改用 `gh api` 读取远端数据。
    `gh` 依赖 PATH 中的 git，调用前需把 `C:\Program Files\Git\cmd` 前置到 PATH。
+10. **`github.com:443` 可能被整体阻断**：DNS 解析到 `20.205.243.166` 时 TCP 连接失败，但
+    `140.82.112.3` / `140.82.113.3` / `20.27.177.113` 可达（证书正常，TLS 1.3）。绕法优先级：
+    1. **本地 CONNECT 中继**最稳：Python 监听 `127.0.0.1:8443` → `140.82.112.3:443`，
+       然后 `git -c http.proxy=http://127.0.0.1:8443 -c http.sslBackend=openssl push <token-url> main`；
+    2. **SSH over `ssh.github.com`**（22/443 均通）：需仓库 deploy key（`gh repo deploy-key add`
+       用 `repo` 权限即可，用户级 `gh ssh-key add` 需要 `admin:public_key`）。
+       注意 `GIT_SSH_COMMAND` 会经 sh 执行、沙箱下报 signal pipe；`~/.ssh/config` 不可写时
+       用 `USERPROFILE` 重定向也不一定生效，故中继优先。
 
 ---
 
 ## 八、下一步
 
-`1.0.0` 已于 2026-10-26 正式导出（versionCode 1000001，发布密钥签名），README 已重写并换上
-1.0.0 实拍截图（`docs/screenshots/clock-1.0.0-landscape.png`：05:20:13、HSEG16 Modern Mono
-Bold Italic、黑底灰衬、91%）。
+**完整版 `1.0.1`**：2026-10-27 正式导出（versionCode `1000101`，1.88 MB，界面 `v1.0.1`）。
+图标改 Plan A 矢量（192 变体，−44%）、字体换 HSEG 1.1.0、ISO 正偏移号恢复 `+`。
 
-待办：用户实测确认。仓库已于 2026-10-26 创建并推送（公开，默认分支 `main`；`.gitignore` 排除了
-`tools/` 工具链、`release/`、`font-source/`、`repo/`、`keystore/`），面板里的 `REPO_URL` 现在指向
-真实仓库，点击可跳转。
+**S7 `0.1.0`**：首版正式（`s7/release/HMSS7_0.1.0_*.APK`，1.18 MB，界面 `v0.1.0`），
+HSEG7 简版 + Plan A 图标，包名 `com.homise.hmss7`。
 
-`1.0.0` 已发布到 GitHub Releases：<https://github.com/KuwsSyet9999/HoMiSe-Clock/releases/tag/v1.0.0>
-（APK 与同名 `.sha256`，API 记录的 digest 与本地一致），README 的「下载」一节指向 `releases/latest`，
-以后发新版本只需新建 Release，链接不必改。
+两个版本均已提交并推送到 <https://github.com/KuwsSyet9999/HoMiSe-Clock>（HEAD `744f2ea`，
+`s7/` 作为仓库子目录）。GitHub Release 目前仍是 `v1.0.0`；需要时按 3.2 的 `gh release create`
+流程补发 `v1.0.1`（上传 `release/HoMiSe_1.0.1_*.APK` 与 `.sha256`）。
 
-内部迭代 `1.0.0.1`（`release/HoMiSe_1.0.0.1_*.APK`）为面板里的仓库地址加了点击跳转
-（`Modifier.openRepoLink()` → `ACTION_VIEW`，横竖屏两处都生效，无浏览器时静默）。已在 MuMu 上
-实测：点击后 Chrome 打开该地址；仓库创建前显示 404，现在可正常打开。
-
-`1.0.0` 正式包已按用户确认**重新导出**，包含该改动（旧包被替换，`version.json` 与 `VERSIONING.md`
-的 1.0.0 记录已更新为新文件名与 SHA-256，`fromInternal` 仍保留 `0.3.2.35`）。`export_release.py`
-与 `archive-release.py` 现支持同版本重新导出（更新记录、替换旧包与表行，不重复追加）。
+待办：用户在真机实测两个正式包；`release/` 里的旧正式包按“全部保留”策略留存。
