@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 启动画面（Android 12+）用：完全透明，让 splash 只剩纯黑底。
+     系统默认会把被启动 alias 的前景图标叠在黑底上，熄灭段在黑色上不可见，
+     只剩亮段，观感支离破碎；这里替换为透明即可避免。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+</shape>

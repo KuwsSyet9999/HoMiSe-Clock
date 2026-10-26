@@ -119,8 +119,14 @@ android {
             if (hasSigningKey) {
                 signingConfig = signingConfigs.getByName("release")
             }
-            // 正式版对外只显示三位版本号（不含迭代序号）
-            buildConfigField("String", "DISPLAY_VERSION", "\"$versionNameText\"")
+            // 正式版对外只显示三位版本号；用 -PtestBuild 构建测试包时显示迭代号，
+            // 便于在界面上确认装的是哪一次内部迭代。
+            val displayVersion = if (project.hasProperty("testBuild")) {
+                "\"$versionNameText.$vIteration\""
+            } else {
+                "\"$versionNameText\""
+            }
+            buildConfigField("String", "DISPLAY_VERSION", displayVersion)
         }
         debug {
             applicationIdSuffix = ".debug"

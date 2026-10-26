@@ -674,12 +674,6 @@ private val BUILD_TAG = if (BuildConfig.DEBUG) "(CS)" else ""
 private const val REPO_URL = "https://github.com/KuwsSyet9999/HoMiSe-Clock"
 
 /**
- * ISO 8601 串样本。长度固定为 25 字符，用来**定格**上方那一行的字号，
- * 使其恰好顶到左右边距。
- */
-private const val INFO_STAMP_SAMPLE = "2026-10-17T06:41:02U08:00"
-
-/**
  * 可能出现的最长字体名，用来定格下方那一行的**通用字号**。
  *
  * 各字体名长短不一（`HSSeg 7 Classic Light` 与
@@ -725,30 +719,22 @@ private fun fitFontSizeSp(
 }
 
 /**
- * 两个等长的 ISO 样本，仅正偏移号不同：
- * **七段**字体没有 `+` 字形（会回退成系统字体、风格突兀），故用 `U` 代替；
- * **十四段**字体本身就有 `+` 字形，保持原样。
- * 两者字符数相同，字号差异只来自 `U` 与 `+` 的字形宽度。
+ * ISO 时刻样本。七段与十四段都用 `+`：HSEG7 1.0 起已自带 `+` 字形，
+ * 不再需要把正偏移号替换成 `U`（那是旧 DSEG7 的兼容处理）。
  */
-private const val INFO_STAMP_SAMPLE_7 = "2026-10-17T06:41:02U08:00"
-private const val INFO_STAMP_SAMPLE_14 = "2026-10-17T06:41:02+08:00"
+private const val INFO_STAMP_SAMPLE = "2026-10-17T06:41:02+08:00"
 
-private fun stampSampleOf(family: DsegFamily): String =
-    if (family.series == 7) INFO_STAMP_SAMPLE_7 else INFO_STAMP_SAMPLE_14
+private fun stampSampleOf(family: DsegFamily): String = INFO_STAMP_SAMPLE
 
 /**
  * 当前的 ISO 8601 时刻串，如 `2026-10-17T06:41:02+08:00`。
- * [family] 为七段时把正偏移号写成 `U`（该族无 `+` 字形），十四段则保留 `+`。
  */
-private fun currentStamp(family: DsegFamily): String {
-    val text = OffsetDateTime.now()
-        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
-    return if (family.series == 7) text.replace('+', 'U') else text
-}
+private fun currentStamp(family: DsegFamily): String =
+    OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
 
 /**
  * 横屏过渡提示：
- *   - 时间**上方**：`日期T时间+时区`（ISO 8601，如 `2026-10-17T06:41:02U08:00`）
+ *   - 时间**上方**：`日期T时间+时区`（ISO 8601，如 `2026-10-17T06:41:02+08:00`）
  *   - 时间**下方**：当前字体全名（如 `HSSeg 7 Modern Mini Bold Italic`）
  *
  * 均用当前字体、灰色；两行**紧邻时钟**上下，而不是贴在屏幕边缘；

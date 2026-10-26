@@ -6,13 +6,13 @@
   "current": {
     "major": 1,
     "minor": 0,
-    "patch": 0,
+    "patch": 1,
     "iteration": 0
   },
   "stage": "release",
-  "releaseVersion": "1.0.0",
-  "lastRelease": "1.0.0",
-  "internalVersion": "1.0.0.0",
+  "releaseVersion": "1.0.1",
+  "lastRelease": "1.0.1",
+  "internalVersion": "1.0.1.0",
   "nextRelease": {
     "plannedVersion": null,
     "bump": "minor",
@@ -605,6 +605,16 @@
       "internalVersion": "1.0.0.0",
       "date": "2026-10-26",
       "summary": "重新导出正式版本 1.0.0（自 0.3.2.35）：正式版 1.0：48 款 HSEG 段码字体、手势切换字体与配色、192 个图标变体、应用信息面板与可点击仓库地址"
+    },
+    {
+      "internalVersion": "1.0.0.1",
+      "date": "2026-10-27",
+      "summary": "图标改 Plan A 矢量 192 变体；字体换 HSEG 1.1.0"
+    },
+    {
+      "internalVersion": "1.0.1.0",
+      "date": "2026-10-27",
+      "summary": "定格正式版本 1.0.1（自 1.0.0.1）：图标改矢量 192 变体；字体升级 HSEG 1.1.0；ISO 正偏移号恢复加号"
     }
   ],
   "releases": [
@@ -667,7 +677,17 @@
       "versionCode": 1000001,
       "fileName": "HoMiSe_1.0.0_20261026042354_cb1637750348b2a2.APK",
       "sha256": "cb1637750348b2a2688d86cae4d425a9c08dc7cb38e74df15861d7a090759a52"
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-10-27",
+      "bump": "patch",
+      "fromInternal": "1.0.0.1",
+      "summary": "图标改矢量 192 变体；字体升级 HSEG 1.1.0；ISO 正偏移号恢复加号",
+      "versionCode": 1000101,
+      "fileName": "HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK",
+      "sha256": "0c94b2a2513dab8edce0a6dfae05a653fe1ac32a3aee2718a2f21e3c028eaf1b"
     }
   ],
-  "updated": "2026-10-26"
+  "updated": "2026-10-27"
 }

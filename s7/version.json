@@ -1,0 +1,26 @@
+{
+  "project": "HoMiSe",
+  "description": "安卓时钟软件",
+  "versioningFile": "VERSIONING.md",
+  "governingRule": "主.子.末.迭代序号；内部迭代只加迭代序号，正式版本导出时才由需求方确认主/子/末三位",
+  "current": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0,
+    "iteration": 1
+  },
+  "stage": "internal",
+  "releaseVersion": "0.1.0",
+  "lastRelease": "",
+  "internalVersion": "0.1.0.1",
+  "nextRelease": {
+    "plannedVersion": null,
+    "bump": "minor",
+    "basis": "正式版发布后重新判定；下一次导出前由需求方确认",
+    "confirmedBy": null,
+    "note": "正式导出须先由需求方确认版本号，再运行 promote"
+  },
+  "history": [],
+  "releases": [],
+  "updated": "2026-10-27"
+}
