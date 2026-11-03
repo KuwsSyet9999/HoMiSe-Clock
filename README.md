@@ -24,6 +24,7 @@
 
 - 48 款：HSEG7（七段）× 24 + HSEG16（十六段）× 24，覆盖 4 族 × 6 字重（含斜体）
 - 左右滑动切换字体族，上下滑动切换字重与斜体，选择持久化
+- 在信息面板里可分别锁定这两条轴：锁定后对应滑动被忽略，避免误触改字体
 - HSEG16 支持小写等宽（Mono）开关，重新分配亮段让笔迹铺满字格
 
 **显示**
@@ -36,7 +37,7 @@
 **信息与交互**
 
 - 单击背景重播信息提示；单击任一信息块使其常驻
-- 长按版本号打开应用信息面板：操作说明、项目仓库、恢复默认设置
+- 长按版本号打开应用信息面板：操作说明、字体锁开关、项目仓库、恢复默认设置
 - 桌面图标随字体、配色、灰底自动更新（192 个变体），回到桌面后生效
 
 **隐私**
@@ -54,8 +55,8 @@
 | 双击 | 字体名 | 小写等宽开关（HSEG16） |
 | 长按 | 背景 | 开关最高亮度 |
 | 长按 | 版本号 | 打开应用信息面板 |
-| 左右滑动 | 全屏 | 切换字体族 |
-| 上下滑动 | 全屏 | 切换字重与斜体 |
+| 左右滑动 | 全屏 | 切换字体族（可在面板锁定） |
+| 上下滑动 | 全屏 | 切换字重与斜体（可在面板锁定） |
 
 ## 字体与授权
 
@@ -118,5 +119,6 @@ HoMiSe/
 
 **HoMiSe** turns an Android device into a segment-display clock: pure black background, white
 HSEG glyphs, `hh:mm:ss` filling the screen. Offline, zero runtime permissions, 48 fonts (HSEG7 /
-HSEG16), gesture-driven font and weight switching, ghost-segment toggle, inverted scheme, and
-192 adaptive launcher icons. Min SDK 26, Kotlin + Jetpack Compose.
+HSEG16), gesture-driven font and weight switching, ghost-segment toggle, inverted scheme,
+192 adaptive launcher icons, and per-axis swipe locks for font family / weight. Min SDK 26,
+Kotlin + Jetpack Compose.
