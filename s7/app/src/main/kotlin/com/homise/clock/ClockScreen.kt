@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,6 +55,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
@@ -139,6 +144,14 @@ fun ClockScreen(
     ghostVisible: Boolean = true,
     /** 切换灰底的回调 */
     onToggleGhost: () -> Unit = {},
+    /** 是否锁定字体族（左右滑动不再切换） */
+    fontLocked: Boolean = false,
+    /** 是否锁定字重/倾斜（上下滑动不再切换） */
+    styleLocked: Boolean = false,
+    /** 切换字体族锁定的回调（面板里点「左右滑动」一行） */
+    onToggleFontLock: () -> Unit = {},
+    /** 切换样式锁定的回调（面板里点「上下滑动」一行） */
+    onToggleStyleLock: () -> Unit = {},
     /** 恢复默认设置（长按版本号的面板里触发） */
     onResetDefaults: () -> Unit = {},
     /** 是否启用等宽小写（双击字体名块切换） */
@@ -203,7 +216,9 @@ fun ClockScreen(
             }
             // 滑动手势：自右向左切字体族、自下向上切字重/斜体样式。
             // 与点击手势分处两个 pointerInput，互不吞掉对方的事件。
-            .pointerInput(Unit) {
+            // 锁状态变化时重建手势处理器：pointerInput 的 lambda 只捕获初始值，
+            // 若 key 固定为 Unit，锁定后仍会用旧的 false 判断而继续切换。
+            .pointerInput(fontLocked, styleLocked) {
                 var total = Offset.Zero
                 detectDragGestures(
                     onDragStart = { total = Offset.Zero },
@@ -215,13 +230,15 @@ fun ClockScreen(
                         // 以位移较大的那个轴判定方向，避免斜向滑动误触发；
                         // 同一条轴上正反两个方向分别正向 / 反向循环。
                         if (abs(total.x) > abs(total.y)) {
-                            when {
+                            // 横向被锁定时忽略，避免全屏时钟被误触改字体
+                            if (!fontLocked) when {
                                 // 横向：自右向左为 x 负（正向），自左向右为 x 正（反向）
                                 total.x < -swipeThresholdPx -> onCycleFamily()
                                 total.x > swipeThresholdPx -> onCycleFamilyReverse()
                             }
                         } else {
-                            when {
+                            // 纵向被锁定时忽略
+                            if (!styleLocked) when {
                                 // 纵向：自下向上为 y 负（正向），自上向下为 y 正（反向）
                                 total.y < -swipeThresholdPx -> onCycleStyle()
                                 total.y > swipeThresholdPx -> onCycleStyleReverse()
@@ -479,6 +496,10 @@ fun ClockScreen(
                     showAbout = false
                     onResetDefaults()
                 },
+                fontLocked = fontLocked,
+                styleLocked = styleLocked,
+                onToggleFontLock = onToggleFontLock,
+                onToggleStyleLock = onToggleStyleLock,
             )
         }
 
@@ -1102,6 +1123,10 @@ private fun InfoText(
 private fun androidx.compose.foundation.layout.BoxScope.AboutPanel(
     onDismiss: () -> Unit,
     onResetDefaults: () -> Unit,
+    fontLocked: Boolean = false,
+    styleLocked: Boolean = false,
+    onToggleFontLock: () -> Unit = {},
+    onToggleStyleLock: () -> Unit = {},
 ) {
     val colors = LocalClockColors.current
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -1189,14 +1214,27 @@ private fun androidx.compose.foundation.layout.BoxScope.AboutPanel(
                 SectionTitle("操作", colors)
                 Spacer(Modifier.height(4.dp))
                 val gestures = listOf(
-                    "单击背景" to "重播信息提示",
-                    "双击时钟" to "开关灰色底衬",
-                    "双击背景" to "黑白配色互换",
-                    "单击信息块" to "该块常驻显示",
-                    "长按背景" to "开关最高亮度",
-                    "左右滑动" to "换字体风格",
-                    "上下滑动" to "换字重与倾斜",
+                    GestureSpec("单击背景", "重播信息提示"),
+                    GestureSpec("双击时钟", "开关灰色底衬"),
+                    GestureSpec("双击背景", "黑白配色互换"),
+                    GestureSpec("单击信息块", "该块常驻显示"),
+                    GestureSpec("长按背景", "开关最高亮度"),
+                    GestureSpec("左右滑动", "换字体风格", LockTarget.Family),
+                    GestureSpec("上下滑动", "换字重与倾斜", LockTarget.Style),
                 )
+                // 可锁的两行：点击切换锁定，锁定后对应轴的滑动被忽略
+                fun isLocked(spec: GestureSpec): Boolean = when (spec.lock) {
+                    LockTarget.Family -> fontLocked
+                    LockTarget.Style -> styleLocked
+                    null -> false
+                }
+                fun toggleLock(spec: GestureSpec) {
+                    when (spec.lock) {
+                        LockTarget.Family -> onToggleFontLock()
+                        LockTarget.Style -> onToggleStyleLock()
+                        null -> Unit
+                    }
+                }
                 if (landscape) {
                     // 两列排布：横屏一行放下 4 组，避免卡片被屏幕高度截断。
                     // 键宽与 AboutRow 保持一致（88dp），否则上下两段的说明列会错开。
@@ -1204,20 +1242,15 @@ private fun androidx.compose.foundation.layout.BoxScope.AboutPanel(
                         Row(modifier = Modifier.fillMaxWidth()) {
                             cols.forEachIndexed { ci, col ->
                                 Column(modifier = Modifier.weight(1f)) {
-                                    col.forEach { (k, v) ->
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth()
-                                                .padding(vertical = 1.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            Text(
-                                                text = k,
-                                                color = colors.label,
-                                                fontSize = 12.sp,
-                                                modifier = Modifier.width(88.dp),
-                                            )
-                                            Text(text = v, color = colors.digits, fontSize = 12.sp)
-                                        }
+                                    col.forEach { spec ->
+                                        AboutRow(
+                                            key = spec.key,
+                                            value = spec.desc,
+                                            colors = colors,
+                                            lockable = spec.lock != null,
+                                            locked = isLocked(spec),
+                                            onToggleLock = { toggleLock(spec) },
+                                        )
                                     }
                                 }
                                 if (ci == 0) Spacer(Modifier.width(16.dp))
@@ -1232,7 +1265,16 @@ private fun androidx.compose.foundation.layout.BoxScope.AboutPanel(
                         Row(modifier = Modifier.fillMaxWidth()) {
                             cols.forEachIndexed { ci, col ->
                                 Column(modifier = Modifier.weight(1f)) {
-                                    col.forEach { (k, v) -> StackedEntry(k, v, colors) }
+                                    col.forEach { spec ->
+                                        StackedEntry(
+                                            key = spec.key,
+                                            value = spec.desc,
+                                            colors = colors,
+                                            lockable = spec.lock != null,
+                                            locked = isLocked(spec),
+                                            onToggleLock = { toggleLock(spec) },
+                                        )
+                                    }
                                 }
                                 if (ci == 0) Spacer(Modifier.width(16.dp))
                             }
@@ -1341,6 +1383,67 @@ private fun Modifier.openRepoLink(): Modifier {
     ) { openRepo(context) }
 }
 
+/** 可锁定的一组手势轴：横向 = 字体族，纵向 = 字重/倾斜。 */
+private enum class LockTarget { Family, Style }
+
+/** 操作说明里的一行；[lock] 非空表示这一行可点击切换该轴的锁定状态。 */
+private data class GestureSpec(
+    val key: String,
+    val desc: String,
+    val lock: LockTarget? = null,
+)
+
+/**
+ * Material 标准锁形的路径数据（24×24 viewport）。
+ * 与 Compose ImageVector 实际使用的路径一致，保证灰/红着色与尺寸可控。
+ */
+private const val LOCK_PATH = "M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"
+private const val LOCK_OPEN_PATH = "M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.7 1.4-3.1 3.1-3.1s3.1 1.4 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"
+
+private val LockIcon: ImageVector by lazy {
+    ImageVector.Builder(
+        name = "Lock",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 24f,
+        viewportHeight = 24f,
+    ).apply {
+        addPath(
+            pathData = PathParser().parsePathString(LOCK_PATH).toNodes(),
+            fill = SolidColor(Color.White),
+        )
+    }.build()
+}
+
+private val LockOpenIcon: ImageVector by lazy {
+    ImageVector.Builder(
+        name = "LockOpen",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 24f,
+        viewportHeight = 24f,
+    ).apply {
+        addPath(
+            pathData = PathParser().parsePathString(LOCK_OPEN_PATH).toNodes(),
+            fill = SolidColor(Color.White),
+        )
+    }.build()
+}
+
+/**
+ * 锁定状态图标：未锁为灰色开锁（Material LockOpen），已锁为红色闭锁（Material Lock）。
+ */
+@Composable
+private fun LockBadge(locked: Boolean, colors: ClockColors, modifier: Modifier = Modifier) {
+    val tint = if (locked) Color(0xFFE53935) else colors.dimmed
+    Image(
+        imageVector = if (locked) LockIcon else LockOpenIcon,
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(tint),
+        modifier = modifier.size(14.dp),
+    )
+}
+
 @Composable
 private fun SectionTitle(text: String, colors: ClockColors) {
     Text(
@@ -1357,10 +1460,36 @@ private fun AboutRow(
     value: String,
     colors: ClockColors,
     modifier: Modifier = Modifier,
+    lockable: Boolean = false,
+    locked: Boolean = false,
+    onToggleLock: () -> Unit = {},
 ) {
-    Row(modifier = modifier.fillMaxWidth().padding(vertical = 1.dp)) {
-        Text(text = key, color = colors.label, fontSize = 12.sp, modifier = Modifier.width(88.dp))
-        Text(text = value, color = colors.digits, fontSize = 12.sp, modifier = Modifier.weight(1f))
+    val tapMod = if (lockable) {
+        Modifier.pointerInput(locked) { detectTapGestures(onTap = { onToggleLock() }) }
+    } else {
+        Modifier
+    }
+    Row(modifier = modifier.fillMaxWidth().then(tapMod).padding(vertical = 1.dp)) {
+        // 锁符号悬挂在文字左侧之外，不占正文列宽，保证键名/说明与其他行对齐
+        Box {
+            Text(text = key, color = colors.label, fontSize = 12.sp, modifier = Modifier.width(88.dp))
+            if (lockable) {
+                LockBadge(
+                    locked = locked,
+                    colors = colors,
+                    modifier = Modifier
+                        .offset(x = (-17).dp)
+                        .align(Alignment.CenterStart),
+                )
+            }
+        }
+        Text(
+            text = value,
+            color = if (locked) colors.dimmed else colors.digits,
+            fontSize = 12.sp,
+            textDecoration = if (locked) TextDecoration.LineThrough else TextDecoration.None,
+            modifier = Modifier.weight(1f),
+        )
     }
 }
 
@@ -1376,10 +1505,36 @@ private fun StackedEntry(
     value: String,
     colors: ClockColors,
     modifier: Modifier = Modifier,
+    lockable: Boolean = false,
+    locked: Boolean = false,
+    onToggleLock: () -> Unit = {},
 ) {
-    Column(modifier = modifier.fillMaxWidth().padding(vertical = 2.dp)) {
-        Text(text = key, color = colors.label, fontSize = 12.sp)
-        Text(text = value, color = colors.digits, fontSize = 12.sp, lineHeight = 16.sp)
+    val tapMod = if (lockable) {
+        Modifier.pointerInput(locked) { detectTapGestures(onTap = { onToggleLock() }) }
+    } else {
+        Modifier
+    }
+    Column(modifier = modifier.fillMaxWidth().then(tapMod).padding(vertical = 2.dp)) {
+        // 锁符号悬挂在操作名左侧之外，不占列宽
+        Box {
+            Text(text = key, color = colors.label, fontSize = 12.sp)
+            if (lockable) {
+                LockBadge(
+                    locked = locked,
+                    colors = colors,
+                    modifier = Modifier
+                        .offset(x = (-17).dp)
+                        .align(Alignment.CenterStart),
+                )
+            }
+        }
+        Text(
+            text = value,
+            color = if (locked) colors.dimmed else colors.digits,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            textDecoration = if (locked) TextDecoration.LineThrough else TextDecoration.None,
+        )
     }
 }
 

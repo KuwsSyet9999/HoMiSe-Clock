@@ -64,6 +64,9 @@ class MainActivity : ComponentActivity() {
                 var fontStyle by remember { mutableStateOf(prefs.fontStyle) }
                 var monoLowercase by remember { mutableStateOf(prefs.monoLowercase) }
                 var ghostVisible by remember { mutableStateOf(prefs.ghostVisible) }
+                // 字体锁：锁定后对应的滑动手势被忽略，避免误触改字体
+                var fontLocked by remember { mutableStateOf(prefs.fontLocked) }
+                var styleLocked by remember { mutableStateOf(prefs.styleLocked) }
 
                 // 亮度状态变化时立刻作用到窗口（BRIGHTNESS_OVERRIDE_NONE 表示跟随系统）
                 LaunchedEffect(maxBrightness) { applyBrightness(maxBrightness) }
@@ -123,6 +126,16 @@ class MainActivity : ComponentActivity() {
                         ghostVisible = !ghostVisible
                         prefs.ghostVisible = ghostVisible
                     },
+                    fontLocked = fontLocked,
+                    styleLocked = styleLocked,
+                    onToggleFontLock = {
+                        fontLocked = !fontLocked
+                        prefs.fontLocked = fontLocked
+                    },
+                    onToggleStyleLock = {
+                        styleLocked = !styleLocked
+                        prefs.styleLocked = styleLocked
+                    },
                     onResetDefaults = {
                         // 恢复出厂：清空偏好并把内存状态一并归位
                         prefs.resetAll()
@@ -131,6 +144,8 @@ class MainActivity : ComponentActivity() {
                         fontFamily = DefaultDsegFamily
                         fontStyle = DefaultDsegStyle
                         monoLowercase = false
+                        fontLocked = false
+                        styleLocked = false
                         // 常驻块的状态在 ClockInfoOverlay 内部，清空偏好后
                         // 下次启动即回到默认（电量常驻）
                         pendingIconVariant = null
@@ -257,6 +272,10 @@ fun ClockRoute(
     onCycleStyleReverse: () -> Unit = {},
     ghostVisible: Boolean = true,
     onToggleGhost: () -> Unit = {},
+    fontLocked: Boolean = false,
+    styleLocked: Boolean = false,
+    onToggleFontLock: () -> Unit = {},
+    onToggleStyleLock: () -> Unit = {},
     onResetDefaults: () -> Unit = {},
     monoLowercase: Boolean = false,
     onToggleMono: () -> Unit = {},
@@ -291,6 +310,10 @@ fun ClockRoute(
         onCycleStyleReverse = onCycleStyleReverse,
         ghostVisible = ghostVisible,
         onToggleGhost = onToggleGhost,
+        fontLocked = fontLocked,
+        styleLocked = styleLocked,
+        onToggleFontLock = onToggleFontLock,
+        onToggleStyleLock = onToggleStyleLock,
         onResetDefaults = onResetDefaults,
         monoLowercase = monoLowercase,
         onToggleMono = onToggleMono,

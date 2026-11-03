@@ -74,6 +74,21 @@ class ClockPreferences(context: Context) {
         set(value) = prefs.edit().putBoolean(KEY_MONO_LOWER, value).apply()
 
     /**
+     * 是否锁定字体族（左右滑动不再切换）。
+     *
+     * 锁定后横向滑动手势被忽略，避免全屏时钟被误触改字体；
+     * 入口在信息面板的「左右滑动」一行。
+     */
+    var fontLocked: Boolean
+        get() = prefs.getBoolean(KEY_FONT_LOCKED, false)
+        set(value) = prefs.edit().putBoolean(KEY_FONT_LOCKED, value).apply()
+
+    /** 是否锁定字重/倾斜（上下滑动不再切换）。 */
+    var styleLocked: Boolean
+        get() = prefs.getBoolean(KEY_STYLE_LOCKED, false)
+        set(value) = prefs.edit().putBoolean(KEY_STYLE_LOCKED, value).apply()
+
+    /**
      * 尚未落地的图标变体序号（-1 表示无）。
      *
      * 图标只能在 onStop 里切换，而「强制停止」不会触发任何生命周期回调，
@@ -96,6 +111,8 @@ class ClockPreferences(context: Context) {
         const val KEY_PINNED_BLOCKS = "pinned_info_blocks"
         const val KEY_MONO_LOWER = "mono_lowercase"
         const val KEY_GHOST = "ghost_visible"
+        const val KEY_FONT_LOCKED = "font_locked"
+        const val KEY_STYLE_LOCKED = "style_locked"
         const val KEY_PENDING_ICON = "pending_icon_variant"
     }
 }

@@ -8,7 +8,8 @@ does is reachable from Python, so this reimplements the parts needed for an inte
   1. bump the iteration number in version.json (internal builds only)
   2. build the debug APK with gradle
   3. read versionCode / versionName back out of the APK and compare with version.json
-  4. name it HoMiSe_<version>_<14-digit time>_<hash16>.APK and copy it into release/
+  4. name it HoMiSe_<version>_<14-digit time>_<hash16>.apk (lower-case, internal builds)
+     and copy it into release/
   5. drop older internal packages, keep every formal release
 
 No elevation required.
@@ -150,7 +151,8 @@ def main():
 
     digest = hashlib.sha256(open(apk, "rb").read()).hexdigest()
     stamp = time.strftime("%Y%m%d%H%M%S")
-    fname = "HoMiSe_{0}_{1}_{2}.APK".format(ver, stamp, digest[:16])
+    # 内部迭代包后缀用小写 .apk，正式包（export_release.py）才用大写 .APK
+    fname = "HoMiSe_{0}_{1}_{2}.apk".format(ver, stamp, digest[:16])
     dst = os.path.join(RELEASE_DIR, fname)
     os.makedirs(RELEASE_DIR, exist_ok=True)
     shutil.copy2(apk, dst)

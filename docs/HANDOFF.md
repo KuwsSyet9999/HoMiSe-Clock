@@ -13,8 +13,8 @@
 | 应用 | Android 数码管时钟「时分秒 / HoMiSe」 |
 | 技术栈 | Kotlin + Jetpack Compose (BOM 2024.09.00)、AGP 8.7.3、Kotlin 2.0.20、Gradle 8.9、JDK 17 |
 | SDK | compileSdk / targetSdk 35，minSdk 26 |
-| 当前版本 | **`1.0.1`**（正式版，2026-10-27 导出），versionCode `1000101` |
-| 最近产物 | `release/HoMiSe_1.0.1_20261027012716_0c94b2a2513dab8e.APK`（1.88 MB，−27%，界面显示 `v1.0.1`） |
+| 当前版本 | **`1.1.0`**（正式版，2026-11-04 导出），versionCode `1010001` |
+| 最近产物 | `release/HoMiSe_1.1.0_20261104045254_5882b59c451775bf.APK`（1.91 MB，界面显示 `v1.1.0`） |
 
 ---
 
@@ -228,7 +228,7 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
 | --- | --- |
 | 应用名 | 中文「时分秒S7」，英文/默认 `HMSS7` |
 | applicationId | `com.homise.hmss7`（debug 加 `.debug`） |
-| 版本 | `0.1.1`（S7 当前正式版），独立 `s7/version.json` |
+| 版本 | `0.2.0`（S7 当前正式版），独立 `s7/version.json` |
 | 字体 | HSEG 1.1.0（只保留 HSEG7 4 族 × 6 样式 = 24 个）；`DsegFamily` 已裁到 4 项 |
 | 图标 | 96 变体（24 字体 × 2 配色 × 2 灰底），全矢量 |
 | 信息块 | 去掉字体名块（剩 ISO / 版本 / 电量），Mono 交互移除 |
@@ -263,6 +263,16 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
   完整版实测显示 `2026-10-26T17:28:01+08:00`。
 - **未做**：字体子集（实测可再省 111 KB / −4%）、dex 优化（约 −70 KB）。
 
+### 6.3 字体锁与测试包标识（两版，2026-11-04 迭代）
+
+- 面板「左右滑动」「上下滑动」两行可点击：锁定后对应轴的滑动被忽略，避免误触改字体。
+- 锁图标为 Material `ImageVector`（`Lock` / `LockOpen`），未锁灰、已锁红，描述同时变灰加删除线；
+  锁符号悬挂在行外（`offset(-17.dp)`），不占正文列宽，文字与相邻行保持对齐。
+- 偏好键 `font_locked` / `style_locked`，默认 `false`（旧版本升级后即未锁）；重启与覆盖安装继承，
+  「恢复默认设置」会清零。
+- **测试包标识**：debug 的桌面名带 `(CS)`（`时分秒(CS)` / `时分秒S7(CS)`），正式包不带。
+- **迭代命名**：内部迭代包 `.apk` 小写，正式包 `.APK` 大写。
+
 完整版若要照此减重：192 个变体全部改 Plan A，图标约 530 KB（原 1446 KB，−63%），
 完整版 APK 预计约 1.66 MB（−35%）；需按版本规则导出新正式版。
 
@@ -290,6 +300,11 @@ gh release create v1.0.0 "release/HoMiSe_1.0.0_<时间>_<哈希>.APK" `
        用 `repo` 权限即可，用户级 `gh ssh-key add` 需要 `admin:public_key`）。
        注意 `GIT_SSH_COMMAND` 会经 sh 执行、沙箱下报 signal pipe；`~/.ssh/config` 不可写时
        用 `USERPROFILE` 重定向也不一定生效，故中继优先。
+11. **字体锁的手势判断要带状态 key**：`pointerInput(Unit)` 的 lambda 只捕获首次组合时的
+    `fontLocked/styleLocked`，锁定后仍会用旧值继续切换。必须写成
+    `pointerInput(fontLocked, styleLocked)`，锁状态变化时重建手势处理器。
+12. **导出包名大小写有约定**：内部迭代包用 `.apk`（`export_apk.py`），正式包用 `.APK`
+    （`export_release.py`）；手写归档时同样遵守，避免与正式包混淆。
 
 ---
 
@@ -316,3 +331,11 @@ README 的「下载」指向 `releases/latest`，因此始终落到这条合并 
 README 第 5 行引用已更新，旧的 1.0.0 截图已删除。
 
 待办：用户在真机实测两个正式包；`release/` 里的旧正式包按“全部保留”策略留存。
+
+**下一版（待确认）**：本轮新增「字体锁」功能（面板锁定字体族/样式、滑动被忽略、状态持久化），
+按版本规则属子版本 +1 —— 完整版 **`1.1.0`**、S7 **`0.2.0`**。当前测试包为 `1.0.1.4` / `0.1.1.4`，
+确认版本号后按 `export_release.py --version … --bump minor` 正式导出（S7 需手动定版）并推送。
+
+**已落实（2026-11-04）**：完整版 `1.1.0`（`HoMiSe_1.1.0_20261104045254_5882b59c451775bf.APK`，1.91 MB）
+与 S7 `0.2.0`（`s7/release/HMSS7_0.2.0_20261104045431_6a99fbe3f6c87a35.APK`，1.1 MB）均已导出并在
+模拟器验证界面显示 `v1.1.0` / `v0.2.0`；待提交推送。
